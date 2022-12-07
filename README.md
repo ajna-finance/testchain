@@ -1,10 +1,10 @@
-= Testchain =
+# Testchain #
 The purpose of this project is to setup a local testchain for testing Ajna deployment and integration testing.
 
-== Prerequisites ==
+## Prerequisites ##
 You'll need `docker` and `docker-compose` installed.
 
-== Setup ==
+## Setup ##
 This creates two instances of `geth`: a bootnode for peer discovery and a JSON-RPC endpoint for fulfilling test requests.
 The testchain is configured to fund a known account with 1000 ETH.  The included `.env` file provides account details for this account and the path to the JSON keystore.
 
@@ -34,7 +34,7 @@ You should receive the following response, indicating the account has 1000 ETH:
 ```
 
 
-== Maintenance ==
+## Maintenance ##
 
 Attach a shell to the bootnode:
 ```
