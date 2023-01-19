@@ -24,6 +24,7 @@ services:
     env_file:
       - .env
     image: geth-client
+    container_name: testnet
     depends_on:
       - geth-bootnode    
     command:
@@ -37,7 +38,7 @@ services:
       --networkid=${NETWORK_ID}
       --netrestrict="172.16.254.0/28"
     ports:
-      - "8545:8545"
+      - "8555:8545"
     networks:
       priv-eth-net:
 
