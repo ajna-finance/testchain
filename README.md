@@ -72,6 +72,7 @@ You should receive the following response, indicating the account has 1000 ETH, 
 ```
 {"jsonrpc":"2.0","id":4,"result":"0x3635c9adc5dea00000"}
 ```
+If you already deployed Ajna to the endpoint, it should return a slightly smaller number.
 
 ### Deploy Ajna to the testnet ###
 
