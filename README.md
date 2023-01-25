@@ -142,9 +142,9 @@ curl 0.0.0.0:8555 -X POST -H "Content-Type: application/json" --data '{
     "params":[]
 }'
 ```
-You should receive the following response, indicating the block height is 16295038:
+You should receive the following response, indicating the block height is 16295021:
 ```
-{"id":2,"jsonrpc":"2.0","result":"0xf8a47e"}
+{"id":2,"jsonrpc":"2.0","result":"0xf8a46d"}
 ```
 
 
@@ -152,5 +152,5 @@ You should receive the following response, indicating the block height is 162950
 
 Attach a shell to the bootnode:
 ```
-docker exec -it ajna-testchain_geth-bootnode_1 /bin/sh
+docker exec -it <image_name> /bin/sh
 ```
