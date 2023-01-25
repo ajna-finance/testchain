@@ -58,7 +58,7 @@ Let's `export DEPLOY_ADDRESS=0xeeDC2EE00730314b7d7ddBf7d19e81FB7E5176CA` to use 
 
 With the testchain up, run the following command to check your ETH balance:
 ```
-curl localhost:8555 -X POST -H "Content-Type: application/json" --data '{
+curl 0.0.0.0:8555 -X POST -H "Content-Type: application/json" --data '{
     "jsonrpc": "2.0", "id":1, 
     "method": "eth_getBalance",
     "params": [
@@ -77,13 +77,10 @@ If you already deployed Ajna to the endpoint, it should return a slightly smalle
 ### Deploy Ajna to the testnet ###
 
 ```
-./deploy-ganache.sh
+./deploy-ajna.sh
 ```
 
-
-
-### Persist changes ###
-Record the address printed by the deployment script here:
+Record addresses printed by the deployment script here:
 ```
 === Local Testchain Addresses ===
 AJNA token      0x25Af17eF4E2E6A4A2CE586C9D25dF87FD84D4a7d
@@ -93,12 +90,62 @@ ERC721 factory  0xC01c2D208ebaA1678F14818Db7A698F11cd0B6AB
 PoolInfoUtils   0x325Cf36179A4d55F09bE9d3C2E1f4337d49A9f2b
 PositionManager 0x12865F86F31e674738192cd3AE154485A6FCB2b6
 RewardsManager  0x06F4dC71a0029E31141fa23988735950324A48C7
+TokensFactory   0x4f05DA51eAAB00e5812c54e370fB95D4C9c51F21
 ```
 
+### Create some test tokens ###
+
+Unfortunately, mainnet tokens cannot be tested on the fork.  Instead, use the Tokens Factory to create some new ones.  `create-token.sh` was made to facilitate this.  To use it, first `export TOKENSFACTORY=<address from above>`, and then pass it the following parameters:
+ * Token name
+ * Token symbol
+ * Number of decimals (18 is standard)
+ * Address to which tokens shall be minted
+ * Amount of tokens to mint (in denormalized token precision)
+
+Here's an example:
+```
+export TOKENSFACTORY=0x4f05DA51eAAB00e5812c54e370fB95D4C9c51F21
+./create-token.sh TestWrappedETH TWETH 18 0xbC33716Bb8Dc2943C0dFFdE1F0A1d2D66F33515E 1000ether
+./create-token.sh TestDai TDAI 18 0xbC33716Bb8Dc2943C0dFFdE1F0A1d2D66F33515E 500000ether
+```
+
+Record the output here:
+```
+Deployed TWETH to 0x97112a824376a2672a61c63c1c20cb4ee5855bc7 and minted 1000ether to 0xbC33716Bb8Dc2943C0dFFdE1F0A1d2D66F33515E.
+Deployed TDAI to 0xc91261159593173b5d82e1024c3e3529e945dc28 and minted 500000ether to 0xbC33716Bb8Dc2943C0dFFdE1F0A1d2D66F33515E.
+```
+
+Validate you can interact with these tokens by checking their number of decimal places:
+```
+cast call 0x97112a824376a2672a61c63c1c20cb4ee5855bc7 "decimals()(uint8)"
+18
+cast call 0xc91261159593173b5d82e1024c3e3529e945dc28 "decimals()(uint8)"
+18
+```
+
+### Persist changes ###
 
 Update any dependent repositories (such as _sdk_) with the new addresses.
 
-Run `docker commit testnet ajna/testnet` to save the image.
+~~Run `docker commit ajna-testnet ajna/testnet` to save the `ajna-testnet` container as an image named `ajna/testnet`.~~
+Until we make the repo public, Ed will run the following to persist the image:
+```
+docker commit ajna-testnet noepel/ajna-testnet:<tag>
+docker push noepel/ajna-testnet:<tag>
+```
+
+Check and record the block height, that you may later confirm whether you're working with a fresh deployment:
+```
+curl 0.0.0.0:8555 -X POST -H "Content-Type: application/json" --data '{
+    "jsonrpc": "2.0", "id":2,
+    "method": "eth_blockNumber",
+    "params":[]
+}'
+```
+You should receive the following response, indicating the block height is 16295038:
+```
+{"id":2,"jsonrpc":"2.0","result":"0xf8a47e"}
+```
 
 
 ## Maintenance ##
