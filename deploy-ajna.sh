@@ -1,9 +1,8 @@
 #!/bin/bash
 
-# terminate hardhat upon error
+# terminate with message upon error
 function fail {
-    kill $hardhat_pid
-    killall node
+    echo Deployment failed.
     exit 1
 }
 
@@ -22,6 +21,7 @@ regex_erc721_factory_address="ERC721\s+factory\s+([0-9xa-fA-F]+)"
 regex_poolinfoutils_address="PoolInfoUtils\s+([0-9xa-fA-F]+)"
 regex_positionmanager_address="PositionManager\s+([0-9xa-fA-F]+)"
 regex_rewardsmanager_address="RewardsManager\s+([0-9xa-fA-F]+)"
+regex_tokensfactory_address="TokensFactory deployed to ([0-9xa-fA-F]+)"
 
 # Not adding these repos as submodules, in case branch/Makefile/scripts within 
 # need adjustment.  Test to ensure user cloned into expected locations.
@@ -94,6 +94,18 @@ else
     echo Could not determine RewardsManager address.
     popd && fail
 fi
+
+# deploy test token factory
+deploy_cmd="forge script scripts/DeployTokensFactory.s.sol:DeployTokensFactory --fork-block-number 1 \
+            --rpc-url ${ETH_RPC_URL} --sender ${DEPLOY_ADDRESS} --private-key ${DEPLOY_RAWKEY} --broadcast -vvv"
+output=$(${deploy_cmd})
+if [[ $output =~ $regex_tokensfactory_address ]]
+then
+    export TOKENSFACTORY=${BASH_REMATCH[1]}
+else
+    echo Could not determine TokensFactory address.
+    popd && fail
+fi
 popd
 
 # print all the addresses
@@ -105,3 +117,4 @@ echo "ERC721 factory  ${ERC721FACTORY}"
 echo "PoolInfoUtils   ${POOLINFOUTILS}"
 echo "PositionManager ${POSITIONMANAGER}"
 echo "RewardsManager  ${REWARDSMANAGER}"
+echo "TokensFactory   ${TOKENSFACTORY}"

@@ -3,11 +3,7 @@ version: '3.7'
 services:
   ganache:
     image: trufflesuite/ganache:latest
-    restart: always
     ports:
       - 8555:8555
-    command: --db /data --accounts 16 --wallet.seed 20070213 --port 8555
-    volumes:
-      - "ganache-vol:/data"
-volumes:
-  ganache-vol:
+    command: --accounts 16 --wallet.seed 20070213 --port 8555 --fork ${ETH_RPC_URL}@16295000 -v
+    container_name: ajna-testnet
