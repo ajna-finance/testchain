@@ -5,5 +5,5 @@ services:
     image: trufflesuite/ganache:latest
     ports:
       - 8555:8555
-    command: --accounts 16 --wallet.seed 20070213 --port 8555 --fork ${ETH_RPC_URL}@16295000 -v
+    command: --db=/app/data --accounts 16 --wallet.seed 20070213 --port 8555 --fork ${ETH_RPC_URL}@16295000 -v
     container_name: ajna-testnet
