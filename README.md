@@ -127,13 +127,6 @@ cast call 0xc91261159593173b5d82e1024c3e3529e945dc28 "decimals()(uint8)"
 
 Update any dependent repositories (such as _sdk_) with the new addresses.
 
-~~Run `docker commit ajna-testnet ajna/testnet` to save the `ajna-testnet` container as an image named `ajna/testnet`.~~
-Until we make the repo public, Ed will run the following to persist the image:
-```
-docker commit ajna-testnet noepel/ajna-testnet:<tag>
-docker push noepel/ajna-testnet:<tag>
-```
-
 Check and record the block height, that you may later confirm whether you're working with a fresh deployment:
 ```
 curl 0.0.0.0:8555 -X POST -H "Content-Type: application/json" --data '{
@@ -147,6 +140,18 @@ You should receive the following response, indicating the block height is 162950
 {"id":2,"jsonrpc":"2.0","result":"0xf8a46d"}
 ```
 
+#### Publish the package ###
+
+For first-time setup, visit [GitHub Developer Settings](https://github.com/settings/tokens) and create a new _personal access token (classic)_ with privileges to the _GitHub Package Repository_.  Record the token somewhere safe.
+
+To authenticate, run `docker login ghcr.io` using your GitHub username and paste your GitHub token as the password.
+
+To push the package to the GitHub Container Repository:
+```
+docker commit ajna-testnet ghcr.io/ajna-finance/ajna-testnet:<tag>
+docker push ghcr.io/ajna-finance/ajna-testnet:<tag>
+```
+Visit [Ajna packages](https://github.com/orgs/ajna-finance/packages) and confirm the package has updated.
 
 ## Maintenance ##
 
