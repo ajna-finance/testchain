@@ -1,13 +1,22 @@
 # Testchain #
-The purpose of this project is to setup a local testchain for testing Ajna deployment and integration testing.
+The purpose of this project is to set up a local testchain for testing Ajna deployment and integration testing.
 
 ## Prerequisites ##
-You'll need `docker` and `docker-compose` installed.
+You'll need `docker` and `docker-compose` installed and a mainnet Ethereum node.
 
 ## Setup ##
 
+First, set `ETH_RPC_URL` to a mainnet node.  The docker container will use this to fork mainnet.
+
+Then, clone the following Ajna GitHub repositories.  Either check them out in the same location you cloned this `testchain` repository, or establish symlinks as needed.
+- https://github.com/ajna-finance/contracts
+- https://github.com/ajna-finance/ecosystem-coordination
+- https://github.com/ajna-finance/tokens-factory
+
+In each repository, switch to whichever branch is appropriate for the testchain, and `make build`.
+
 ### Create a docker image with a local testnet ###
-This creates a single instance of `ganache` and uses a wallet seed for consistant account generation.
+The included `docker-compose.yml` creates a single instance of `ganache` and uses a wallet seed for consistant account generation.
 
 ```
 docker-compose up
@@ -83,14 +92,14 @@ If you already deployed Ajna to the endpoint, it should return a slightly smalle
 Record addresses printed by the deployment script here:
 ```
 === Local Testchain Addresses ===
-AJNA token      0x25Af17eF4E2E6A4A2CE586C9D25dF87FD84D4a7d
-GrantFund       0xda146447b60abFaC7E4e0A0f4064eA6FF6dc7BCA
-ERC20 factory   0xaCBDae8801983605EFC40f48812f7efF797504da
-ERC721 factory  0xC01c2D208ebaA1678F14818Db7A698F11cd0B6AB
-PoolInfoUtils   0x325Cf36179A4d55F09bE9d3C2E1f4337d49A9f2b
-PositionManager 0x12865F86F31e674738192cd3AE154485A6FCB2b6
-RewardsManager  0x06F4dC71a0029E31141fa23988735950324A48C7
-TokensFactory   0x4f05DA51eAAB00e5812c54e370fB95D4C9c51F21
+AJNA token      0x8e2dd77D0f1692E674D5ebC2005DfDB0D597B82F
+GrantFund       0xd599860AB56E89B9CD780742105e62202590D8c6
+ERC20 factory   0x4400239aB8Ed6180842FEF8917374C790e0AD5d7
+ERC721 factory  0xF9cAeaA6d1da6DBfB5BF253850c57243207511B9
+PoolInfoUtils   0xa2e74eCd4D66e4Af1DBdbB9672168A22111Ac735
+PositionManager 0xCCF8977c3af3B5E1FCa8d1d786A07dE58D5A31C4
+RewardsManager  0x2112435001B14E2262eB4Cfea958c9029B3Bc007
+TokensFactory   0x81482B24901a73E336E5683ece32773047362A36
 ```
 
 ### Create some test tokens ###
@@ -102,24 +111,21 @@ Unfortunately, mainnet tokens cannot be tested on the fork.  Instead, use the To
  * Address to which tokens shall be minted
  * Amount of tokens to mint (in denormalized token precision)
 
-Here's an example:
+Create these tokens, which are used by Ajna SDK unit tests:
 ```
-export TOKENSFACTORY=0x4f05DA51eAAB00e5812c54e370fB95D4C9c51F21
 ./create-token.sh TestWrappedETH TWETH 18 0xbC33716Bb8Dc2943C0dFFdE1F0A1d2D66F33515E 1000ether
 ./create-token.sh TestDai TDAI 18 0xbC33716Bb8Dc2943C0dFFdE1F0A1d2D66F33515E 500000ether
 ```
 
 Record the output here:
 ```
-Deployed TWETH to 0x97112a824376a2672a61c63c1c20cb4ee5855bc7 and minted 1000ether to 0xbC33716Bb8Dc2943C0dFFdE1F0A1d2D66F33515E.
-Deployed TDAI to 0xc91261159593173b5d82e1024c3e3529e945dc28 and minted 500000ether to 0xbC33716Bb8Dc2943C0dFFdE1F0A1d2D66F33515E.
+Deployed TWETH to 0xc16be3793a18ca3126e0a3da607d32e6107eec20 and minted 1000ether to 0xbC33716Bb8Dc2943C0dFFdE1F0A1d2D66F33515E.
+Deployed TDAI to 0x6a10ec8f42b503d4453d65439440d2d12b3945a0 and minted 500000ether to 0xbC33716Bb8Dc2943C0dFFdE1F0A1d2D66F33515E.
 ```
 
-Validate you can interact with these tokens by checking their number of decimal places:
+Validate you can interact with a token by checking number of decimal places:
 ```
-cast call 0x97112a824376a2672a61c63c1c20cb4ee5855bc7 "decimals()(uint8)"
-18
-cast call 0xc91261159593173b5d82e1024c3e3529e945dc28 "decimals()(uint8)"
+cast call <token address> "decimals()(uint8)"
 18
 ```
 
@@ -135,7 +141,7 @@ curl 0.0.0.0:8555 -X POST -H "Content-Type: application/json" --data '{
     "params":[]
 }'
 ```
-You should receive the following response, indicating the block height is 16295021:
+You should receive a response like the following, which indicates a block height of 16295021:
 ```
 {"id":2,"jsonrpc":"2.0","result":"0xf8a46d"}
 ```

@@ -23,10 +23,10 @@ regex_positionmanager_address="PositionManager\s+([0-9xa-fA-F]+)"
 regex_rewardsmanager_address="RewardsManager\s+([0-9xa-fA-F]+)"
 regex_tokensfactory_address="TokensFactory deployed to ([0-9xa-fA-F]+)"
 
-# Not adding these repos as submodules, in case branch/Makefile/scripts within 
-# need adjustment.  Test to ensure user cloned into expected locations.
+# Test to ensure user cloned repositories into expected locations.
 pushd ../ecosystem-coordination && popd || fail
 pushd ../contracts && popd || fail
+pushd ../tokens-factory && popd || fail
 
 # "forge script" cannot use the forked AJNA token, so deploy a new one to the fork
 pushd ../ecosystem-coordination
@@ -96,7 +96,8 @@ else
 fi
 
 # deploy test token factory
-deploy_cmd="forge script scripts/DeployTokensFactory.s.sol:DeployTokensFactory --fork-block-number 1 \
+pushd ../tokens-factory
+deploy_cmd="forge script script/DeployTokensFactory.s.sol:DeployTokensFactory --fork-block-number 1 \
             --rpc-url ${ETH_RPC_URL} --sender ${DEPLOY_ADDRESS} --private-key ${DEPLOY_RAWKEY} --broadcast -vvv"
 output=$(${deploy_cmd})
 if [[ $output =~ $regex_tokensfactory_address ]]
