@@ -17,12 +17,11 @@ function log {
 }
 function fail {
     log "$1"
-    popd || exit 1
+    exit 1
 }
 
 regex_token_address='logs\s+\[\{"address":"([0-9xa-fA-F]+)","topics":'
 
-pushd ../contracts > /dev/null
 if [[ -z ${TOKENSFACTORY} ]]; then fail "please set TOKENSFACTORY address"; fi
 
 # create the token
@@ -49,5 +48,3 @@ else
     # return token address to calling script
     echo ${TOKEN}
 fi
-
-popd > /dev/null

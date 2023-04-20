@@ -11,14 +11,12 @@ collateral_token=${1:?}
 quote_token=${2:?}
 quiet=${3:-0}
 
-pushd ../contracts > /dev/null
-
 function log {
     if [[ $quiet == 0 ]]; then echo "$1"; fi
 }
 function fail {
     log "$1"
-    popd || exit 1
+    exit 1
 }
 
 regex_pool_bytes='"data":"0x0{24}([0-9a-fA-F]+)'
@@ -44,5 +42,3 @@ else
     # return token address to calling script
     echo ${POOL}
 fi
-
-popd > /dev/null
