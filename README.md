@@ -94,41 +94,31 @@ Record addresses printed by the deployment script here:
 === Local Testchain Addresses ===
 AJNA token      0x25Af17eF4E2E6A4A2CE586C9D25dF87FD84D4a7d
 GrantFund       0xda146447b60abFaC7E4e0A0f4064eA6FF6dc7BCA
-ERC20 factory   0xaCBDae8801983605EFC40f48812f7efF797504da
-ERC721 factory  0xC01c2D208ebaA1678F14818Db7A698F11cd0B6AB
-PoolInfoUtils   0x325Cf36179A4d55F09bE9d3C2E1f4337d49A9f2b
-PositionManager 0x12865F86F31e674738192cd3AE154485A6FCB2b6
-RewardsManager  0x06F4dC71a0029E31141fa23988735950324A48C7
-TokensFactory   0x4f05DA51eAAB00e5812c54e370fB95D4C9c51F21
+ERC20 factory   0x12865F86F31e674738192cd3AE154485A6FCB2b6
+ERC721 factory  0x06F4dC71a0029E31141fa23988735950324A48C7
+PoolInfoUtils   0x9EF8ad06546EE0FbCB9927bC015b0ce7159c2e1e
+PositionManager 0xD86c4A8b172170Da0d5C0C1F12455bA80Eaa42AD
+RewardsManager  0x9617ABE221F9A9c492D5348be56aef4Db75A692d
+TokensFactory   0xdF7403003a16c49ebA5883bB5890d474794cea5a
 ```
 
-### Create some test tokens ###
+### Create test tokens and pools ###
 
-Unfortunately, mainnet tokens cannot be tested on the fork.  Instead, use the Tokens Factory to create some new ones.  `create-token.sh` was made to facilitate this.  To use it, first `export TOKENSFACTORY=<address from above>`, and then pass it the following parameters:
- * Token name
- * Token symbol
- * Number of decimals (18 is standard)
- * Address to which tokens shall be minted
- * Amount of tokens to mint (in denormalized token precision)
+To facilitate testing, create some test tokens and pools.  Export `TOKENSFACTORY` and `ERC20FACTORY` to addresses from above, and then run `./deploy-canned.data.sh`.  This script will create several artifacts:
+* 8 test tokens: 4 mimicing popular tokens with appropriate decimal places, and 4 with no implied price.  All tokens get minted to address[0] from the list above.
+* 4 pools:
+  * `TESTA-DAI` - Assume market price of TESTA is 100 DAI. **(TODO)** Lender 0xbC33716Bb8Dc2943C0dFFdE1F0A1d2D66F33515E adds liquidity to buckets as follows:
+    | index | price   | deposit | collateral |
+    |-------|--------:|--------:|-----------:|
+    | 3220  | 106.520 | 0       | 3.1        |
+    | 3236  |  98.350 | 8000    | 0          |
+    | 3242  |  95.450 | 12000   | 0          |
+    | 3261  |  86.821 | 5000    | 0          |
 
-Create these tokens, which are used by Ajna SDK unit tests:
-```
-./create-token.sh TestWrappedETH TWETH 18 0xbC33716Bb8Dc2943C0dFFdE1F0A1d2D66F33515E 1000ether
-./create-token.sh TestDai TDAI 18 0xbC33716Bb8Dc2943C0dFFdE1F0A1d2D66F33515E 500000ether
-```
-
-Record the output here:
-```
-Deployed TWETH to 0x97112a824376a2672a61c63c1c20cb4ee5855bc7 and minted 1000ether to 0xbC33716Bb8Dc2943C0dFFdE1F0A1d2D66F33515E.
-Deployed TDAI to 0xc91261159593173b5d82e1024c3e3529e945dc28 and minted 500000ether to 0xbC33716Bb8Dc2943C0dFFdE1F0A1d2D66F33515E.
-```
-
-Validate you can interact with a token by checking number of decimal places:
-```
-export ETH_RPC_URL=http://0.0.0.0:8555
-cast call <token address> "decimals()(uint8)"
-18
-```
+    Borrower 0xD293C11Cd5025cd7B2218e74fd8D142A19833f74 draws 10k debt, bringing LUP index to 3242.
+  * `TESTB-DAI` - empty pool
+  * `TESTC-DAI` - empty pool
+  * `TESTD-DAI` - empty pool
 
 ### Persist changes ###
 
