@@ -77,5 +77,5 @@ echo Borrower drawing debt
 DEBT=10000; PRICE=100; CR=1.3
 COLLATERAL=$(echo "$DEBT / $PRICE * $CR / 1" | bc)
 cast send $POOLA "drawDebt(address,uint256,uint256,uint256)" $BORROWER_ADDRESS ${DEBT}ether 3260 ${COLLATERAL}ether --from $BORROWER_ADDRESS --private-key $BORROWER_KEY --gas-limit 1000000 > /dev/null
-echo Pool debt: $( cast --to-unit $(cast call 0x03d038263351b0a0c454de04633c9b1669af8c5c "debtInfo()(uint256,uint256,uint256)" | head -1) ether )
+echo Pool debt: $( cast --to-unit $(cast call $POOLA "debtInfo()(uint256,uint256,uint256)" | head -1) ether )
 echo

@@ -17,6 +17,7 @@ Then, clone the following Ajna GitHub repositories.  Either check them out in th
 - https://github.com/ajna-finance/tokens-factory
 
 In each repository, switch to whichever branch is appropriate for the testchain, and `make build`.
+Because `forge script` arguments conflict with _foundry_ configuration, comment out `block_number` and `fork_block_number` in `ecosystem-coordination/foundry.toml`.
 
 ### Create a docker image with a local testnet ###
 The included `docker-compose.yml` creates a single instance of `ganache` and uses a wallet seed for consistant account generation.
@@ -96,18 +97,18 @@ Record addresses printed by the deployment script here:
 ```
 === Local Testchain Addresses ===
 AJNA token      0x25Af17eF4E2E6A4A2CE586C9D25dF87FD84D4a7d
-GrantFund       0xda146447b60abFaC7E4e0A0f4064eA6FF6dc7BCA
-ERC20 factory   0x12865F86F31e674738192cd3AE154485A6FCB2b6
-ERC721 factory  0x06F4dC71a0029E31141fa23988735950324A48C7
-PoolInfoUtils   0x9EF8ad06546EE0FbCB9927bC015b0ce7159c2e1e
-PositionManager 0xD86c4A8b172170Da0d5C0C1F12455bA80Eaa42AD
-RewardsManager  0x9617ABE221F9A9c492D5348be56aef4Db75A692d
-TokensFactory   0xdF7403003a16c49ebA5883bB5890d474794cea5a
+GrantFund       0xE340B87CEd1af1AbE1CE8D617c84B7f168e3b18b
+ERC20 factory   0xC01c2D208ebaA1678F14818Db7A698F11cd0B6AB
+ERC721 factory  0x325Cf36179A4d55F09bE9d3C2E1f4337d49A9f2b
+PoolInfoUtils   0x12865F86F31e674738192cd3AE154485A6FCB2b6
+PositionManager 0x06F4dC71a0029E31141fa23988735950324A48C7
+RewardsManager  0x9EF8ad06546EE0FbCB9927bC015b0ce7159c2e1e
+TokensFactory   0x6c5c7fD98415168ada1930d44447790959097482
 ```
 
 ### Create test tokens and pools ###
 
-To facilitate testing, create some test tokens and pools.  Export `TOKENSFACTORY` and `ERC20FACTORY` to addresses from above, and then run `./deploy-canned.data.sh`.  This script will create several artifacts:
+To facilitate testing, create some test tokens and pools.  Export `TOKENSFACTORY` and `ERC20FACTORY` to addresses from above, and then run `./deploy-canned-data.sh`.  This script will create several artifacts:
 * 8 test tokens: 4 mimicing popular tokens with appropriate decimal places, and 4 with no implied price.  All tokens get minted to address[0] from the list above.
 * 4 pools:
   * `TESTA-DAI` - Assume market price of TESTA is 100 DAI. **(TODO)** Lender 0xbC33716Bb8Dc2943C0dFFdE1F0A1d2D66F33515E adds liquidity to buckets as follows:
@@ -125,22 +126,23 @@ To facilitate testing, create some test tokens and pools.  Export `TOKENSFACTORY
 
 Output should look like this:
 ```
-Deployed TWETH to 0x7bd6b3c06ec9f9dc7a1658e52121c32c8fb76a4f
-Deployed TDAI  to 0x9cd8f5eae0ef43b7e5e8ffc74b0899545250e3f3
-Deployed TWBTC to 0x99bda273d542840bbaed6fec0165e1670d6de528
-Deployed TUSDC to 0x40caafd8b7dd07409609720659d91e7894c9b315
-Deployed TESTA to 0x2c1eee85197ba29e139c09c46cd546887e2749bd
-Deployed TESTB to 0x3d7ce4d1e1dfd3839f71dd1819fb69eb02df889a
-Deployed TESTC to 0xbf03bfa16f28686d23ae1e13ea6992275f69a251
-Deployed TESTD to 0x3d694eeb6bcab80d4a309db2bd2f23f7b4bdb003
+Deployed TWETH to 0x78269142d81cb04994305c441a48c0b385b0f522
+Deployed TDAI  to 0xf972eeb9edd1e02ccf66e05a4fb0343417c47c1e
+Deployed TWBTC to 0x6dde729d45bd4a274fecb90e87b6b17587e80344
+Deployed TUSDC to 0x437d720dd77d5ad6dd05b86bfe717f35bfba6c57
+Deployed TESTA to 0x0024c6b5ece098700085fd329fb66d3b995925b1
+Deployed TESTB to 0x547608ebae2c147b2321cc8d03012f8a2c77a066
+Deployed TESTC to 0xb34ba81dc885068cf8d76ad047b8d6c4518eb7ae
+Deployed TESTD to 0xe9228f9184a361316a30a589b2e4a3c644cfc53c
 
-TESTA-TDAI pool deployed to 0x44a75e7692e30090e7c1988e9c7385d1fc6ffdb6
-TESTB-TDAI pool deployed to 0xb0d5e3f5708bfa29c35fe07b1d706d93d7b00c54
-TESTC-TDAI pool deployed to 0x94447cdfed5e6e5a847c5c1caa1186e71828f89d
-TESTD-TDAI pool deployed to 0x1573fef83d35e209a898ebdf5acb3a560067df15
+TESTA-TDAI pool deployed to 0x40bcaf0006919b5620f7a9cd1734d52b3537cf95
+TESTB-TDAI pool deployed to 0x3ac7e61149c5fba6f46af6ca04e78e568a8c5347
+TESTC-TDAI pool deployed to 0xcef8c1dbe5c958da6358e183984a99b7576e47fb
+TESTD-TDAI pool deployed to 0xf952c260b9a4167d6a5bb5ea4d6cdd898993c3bc
 
 Provisioning tokens to lender 0xbC33716Bb8Dc2943C0dFFdE1F0A1d2D66F33515E
 Lender has 100000 TDAI
+Provisioning tokens to borrower 0xD293C11Cd5025cd7B2218e74fd8D142A19833f74
 Borrower has 4000 TESTA
 
 Approving POOLA to spend lender's tokens
@@ -149,7 +151,7 @@ Pool size: 25000
 
 Approving POOLA to spend borrower's tokens
 Borrower drawing debt
-Pool debt: 10009.636539535804830288
+Pool debt: 10009.615400485525712308
 ```
 Ensure pool size and pool debt is appropriate.
 After execution, update the text above with new token and pool addresses.
