@@ -2,7 +2,10 @@
 The purpose of this project is to set up a local testchain for testing Ajna deployment and integration testing.
 
 ## Prerequisites ##
-You'll need `docker` and `docker-compose` installed and a mainnet Ethereum node.
+* `docker` and `docker-compose`
+* a mainnet Ethereum node to create the fork
+* `foundry` tools (installation documented in `contracts` repository)
+* `bc` and `jq` tools
 
 ## Setup ##
 
@@ -120,9 +123,39 @@ To facilitate testing, create some test tokens and pools.  Export `TOKENSFACTORY
   * `TESTC-DAI` - empty pool
   * `TESTD-DAI` - empty pool
 
-### Persist changes ###
+Output should look like this:
+```
+Deployed TWETH to 0x7bd6b3c06ec9f9dc7a1658e52121c32c8fb76a4f
+Deployed TDAI  to 0x9cd8f5eae0ef43b7e5e8ffc74b0899545250e3f3
+Deployed TWBTC to 0x99bda273d542840bbaed6fec0165e1670d6de528
+Deployed TUSDC to 0x40caafd8b7dd07409609720659d91e7894c9b315
+Deployed TESTA to 0x2c1eee85197ba29e139c09c46cd546887e2749bd
+Deployed TESTB to 0x3d7ce4d1e1dfd3839f71dd1819fb69eb02df889a
+Deployed TESTC to 0xbf03bfa16f28686d23ae1e13ea6992275f69a251
+Deployed TESTD to 0x3d694eeb6bcab80d4a309db2bd2f23f7b4bdb003
 
-Update any dependent repositories (such as _sdk_) with the new addresses.
+TESTA-TDAI pool deployed to 0x44a75e7692e30090e7c1988e9c7385d1fc6ffdb6
+TESTB-TDAI pool deployed to 0xb0d5e3f5708bfa29c35fe07b1d706d93d7b00c54
+TESTC-TDAI pool deployed to 0x94447cdfed5e6e5a847c5c1caa1186e71828f89d
+TESTD-TDAI pool deployed to 0x1573fef83d35e209a898ebdf5acb3a560067df15
+
+Provisioning tokens to lender 0xbC33716Bb8Dc2943C0dFFdE1F0A1d2D66F33515E
+Lender has 100000 TDAI
+Borrower has 4000 TESTA
+
+Approving POOLA to spend lender's tokens
+Lender adding liquidity
+Pool size: 25000
+
+Approving POOLA to spend borrower's tokens
+Borrower drawing debt
+Pool debt: 10009.636539535804830288
+```
+Ensure pool size and pool debt is appropriate.
+After execution, update the text above with new token and pool addresses.
+
+
+### Persist changes ###
 
 Check the block height, that you may later confirm whether you're working with a fresh deployment:
 ```
@@ -137,7 +170,7 @@ You should receive a response like the following, which indicates a block height
 {"id":2,"jsonrpc":"2.0","result":"0xf8a46d"}
 ```
 
-#### Publish the package ###
+### Publish the package ###
 
 For first-time setup, visit [GitHub Developer Settings](https://github.com/settings/tokens) and create a new _personal access token (classic)_ with privileges to the _GitHub Package Repository_.  Set a reasonable expiration; the default is 7 days.  Record the token somewhere safe.
 
