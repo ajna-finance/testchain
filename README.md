@@ -111,7 +111,7 @@ TokensFactory   0x6c5c7fD98415168ada1930d44447790959097482
 To facilitate testing, create some test tokens and pools.  Export `TOKENSFACTORY` and `ERC20FACTORY` to addresses from above, and then run `./deploy-canned-data.sh`.  This script will create several artifacts:
 * 8 test tokens: 4 mimicing popular tokens with appropriate decimal places, and 4 with no implied price.  All tokens get minted to address[0] from the list above.
 * 4 pools:
-  * `TESTA-DAI` - Assume market price of TESTA is 100 DAI. **(TODO)** Lender 0xbC33716Bb8Dc2943C0dFFdE1F0A1d2D66F33515E adds liquidity to buckets as follows:
+  * `TESTA-DAI` - Assume market price of TESTA is 100 DAI.  Lender 0xbC33716Bb8Dc2943C0dFFdE1F0A1d2D66F33515E adds liquidity to buckets as follows:
     | index | price   | deposit | collateral |
     |-------|--------:|--------:|-----------:|
     | 3220  | 106.520 | 0       | 3.1        |
