@@ -38,9 +38,12 @@ if [[ $output =~ $regex_ajna_token_address ]]
 then
     export AJNA_TOKEN=${BASH_REMATCH[1]}
 else
+    echo $output
     echo Could not determine AJNA token address.
     popd && fail
 fi
+# since we minted 2bbn, burn half the tokens
+cast send ${AJNA_TOKEN} "burn(uint256)" 1000000000ether --from $DEPLOY_ADDRESS --private-key $DEPLOY_RAWKEY > /dev/null
 
 # deploy GrantFund
 deploy_cmd="forge script script/GrantFund.s.sol:DeployGrantFund \
@@ -50,19 +53,21 @@ if [[ $output =~ $regex_grantfund_address ]]
 then
     export GRANTFUND=${BASH_REMATCH[1]}
 else
+    echo $output
     echo Could not determine GrantFund address.
     popd && fail
 fi
 
 # deploy everything in the contracts repository
 pushd ../contracts
-deploy_cmd="forge script ./deploy.sol --fork-block-number 1 \
+deploy_cmd="forge script ./deploy.sol \
 		    --rpc-url ${ETH_RPC_URL} --sender ${DEPLOY_ADDRESS} --private-key ${DEPLOY_RAWKEY} --broadcast -vvv"
 output=$(${deploy_cmd})
 if [[ $output =~ $regex_erc20_factory_address ]]
 then
     export ERC20FACTORY=${BASH_REMATCH[1]}
 else
+    echo $output
     echo Could not determine ERC20 factory address.
     popd && fail
 fi
@@ -104,6 +109,7 @@ if [[ $output =~ $regex_tokensfactory_address ]]
 then
     export TOKENSFACTORY=${BASH_REMATCH[1]}
 else
+    echo $output
     echo Could not determine TokensFactory address.
     popd && fail
 fi

@@ -2,7 +2,10 @@
 The purpose of this project is to set up a local testchain for testing Ajna deployment and integration testing.
 
 ## Prerequisites ##
-You'll need `docker` and `docker-compose` installed and a mainnet Ethereum node.
+* `docker` and `docker-compose`
+* a mainnet Ethereum node to create the fork
+* `foundry` tools (installation documented in `contracts` repository)
+* `bc` and `jq` tools
 
 ## Setup ##
 
@@ -14,6 +17,7 @@ Then, clone the following Ajna GitHub repositories.  Either check them out in th
 - https://github.com/ajna-finance/tokens-factory
 
 In each repository, switch to whichever branch is appropriate for the testchain, and `make build`.
+Because `forge script` arguments conflict with _foundry_ configuration, comment out `block_number` and `fork_block_number` in `ecosystem-coordination/foundry.toml`.
 
 ### Create a docker image with a local testnet ###
 The included `docker-compose.yml` creates a single instance of `ganache` and uses a wallet seed for consistant account generation.
@@ -93,46 +97,67 @@ Record addresses printed by the deployment script here:
 ```
 === Local Testchain Addresses ===
 AJNA token      0x25Af17eF4E2E6A4A2CE586C9D25dF87FD84D4a7d
-GrantFund       0xda146447b60abFaC7E4e0A0f4064eA6FF6dc7BCA
-ERC20 factory   0xaCBDae8801983605EFC40f48812f7efF797504da
-ERC721 factory  0xC01c2D208ebaA1678F14818Db7A698F11cd0B6AB
-PoolInfoUtils   0x325Cf36179A4d55F09bE9d3C2E1f4337d49A9f2b
-PositionManager 0x12865F86F31e674738192cd3AE154485A6FCB2b6
-RewardsManager  0x06F4dC71a0029E31141fa23988735950324A48C7
-TokensFactory   0x4f05DA51eAAB00e5812c54e370fB95D4C9c51F21
+GrantFund       0xE340B87CEd1af1AbE1CE8D617c84B7f168e3b18b
+ERC20 factory   0xC01c2D208ebaA1678F14818Db7A698F11cd0B6AB
+ERC721 factory  0x325Cf36179A4d55F09bE9d3C2E1f4337d49A9f2b
+PoolInfoUtils   0x12865F86F31e674738192cd3AE154485A6FCB2b6
+PositionManager 0x06F4dC71a0029E31141fa23988735950324A48C7
+RewardsManager  0x9EF8ad06546EE0FbCB9927bC015b0ce7159c2e1e
+TokensFactory   0x6c5c7fD98415168ada1930d44447790959097482
 ```
 
-### Create some test tokens ###
+### Create test tokens and pools ###
 
-Unfortunately, mainnet tokens cannot be tested on the fork.  Instead, use the Tokens Factory to create some new ones.  `create-token.sh` was made to facilitate this.  To use it, first `export TOKENSFACTORY=<address from above>`, and then pass it the following parameters:
- * Token name
- * Token symbol
- * Number of decimals (18 is standard)
- * Address to which tokens shall be minted
- * Amount of tokens to mint (in denormalized token precision)
+To facilitate testing, create some test tokens and pools.  Export `TOKENSFACTORY` and `ERC20FACTORY` to addresses from above, and then run `./deploy-canned-data.sh`.  This script will create several artifacts:
+* 8 test tokens: 4 mimicing popular tokens with appropriate decimal places, and 4 with no implied price.  All tokens get minted to address[0] from the list above.
+* 4 pools:
+  * `TESTA-DAI` - Assume market price of TESTA is 100 DAI.  Lender 0xbC33716Bb8Dc2943C0dFFdE1F0A1d2D66F33515E adds liquidity to buckets as follows:
+    | index | price   | deposit | collateral |
+    |-------|--------:|--------:|-----------:|
+    | 3220  | 106.520 | 0       | 3.1        |
+    | 3236  |  98.350 | 8000    | 0          |
+    | 3242  |  95.450 | 12000   | 0          |
+    | 3261  |  86.821 | 5000    | 0          |
 
-Create these tokens, which are used by Ajna SDK unit tests:
-```
-./create-token.sh TestWrappedETH TWETH 18 0xbC33716Bb8Dc2943C0dFFdE1F0A1d2D66F33515E 1000ether
-./create-token.sh TestDai TDAI 18 0xbC33716Bb8Dc2943C0dFFdE1F0A1d2D66F33515E 500000ether
-```
+    Borrower 0xD293C11Cd5025cd7B2218e74fd8D142A19833f74 draws 10k debt, bringing LUP index to 3242.
+  * `TESTB-DAI` - empty pool
+  * `TESTC-DAI` - empty pool
+  * `TESTD-DAI` - empty pool
 
-Record the output here:
+Output should look like this:
 ```
-Deployed TWETH to 0x97112a824376a2672a61c63c1c20cb4ee5855bc7 and minted 1000ether to 0xbC33716Bb8Dc2943C0dFFdE1F0A1d2D66F33515E.
-Deployed TDAI to 0xc91261159593173b5d82e1024c3e3529e945dc28 and minted 500000ether to 0xbC33716Bb8Dc2943C0dFFdE1F0A1d2D66F33515E.
-```
+Deployed TWETH to 0x78269142d81cb04994305c441a48c0b385b0f522
+Deployed TDAI  to 0xf972eeb9edd1e02ccf66e05a4fb0343417c47c1e
+Deployed TWBTC to 0x6dde729d45bd4a274fecb90e87b6b17587e80344
+Deployed TUSDC to 0x437d720dd77d5ad6dd05b86bfe717f35bfba6c57
+Deployed TESTA to 0x0024c6b5ece098700085fd329fb66d3b995925b1
+Deployed TESTB to 0x547608ebae2c147b2321cc8d03012f8a2c77a066
+Deployed TESTC to 0xb34ba81dc885068cf8d76ad047b8d6c4518eb7ae
+Deployed TESTD to 0xe9228f9184a361316a30a589b2e4a3c644cfc53c
 
-Validate you can interact with a token by checking number of decimal places:
+TESTA-TDAI pool deployed to 0x40bcaf0006919b5620f7a9cd1734d52b3537cf95
+TESTB-TDAI pool deployed to 0x3ac7e61149c5fba6f46af6ca04e78e568a8c5347
+TESTC-TDAI pool deployed to 0xcef8c1dbe5c958da6358e183984a99b7576e47fb
+TESTD-TDAI pool deployed to 0xf952c260b9a4167d6a5bb5ea4d6cdd898993c3bc
+
+Provisioning tokens to lender 0xbC33716Bb8Dc2943C0dFFdE1F0A1d2D66F33515E
+Lender has 100000 TDAI
+Provisioning tokens to borrower 0xD293C11Cd5025cd7B2218e74fd8D142A19833f74
+Borrower has 4000 TESTA
+
+Approving POOLA to spend lender's tokens
+Lender adding liquidity
+Pool size: 25000
+
+Approving POOLA to spend borrower's tokens
+Borrower drawing debt
+Pool debt: 10009.615400485525712308
 ```
-export ETH_RPC_URL=http://0.0.0.0:8555
-cast call <token address> "decimals()(uint8)"
-18
-```
+Ensure pool size and pool debt is appropriate.
+After execution, update the text above with new token and pool addresses.
+
 
 ### Persist changes ###
-
-Update any dependent repositories (such as _sdk_) with the new addresses.
 
 Check the block height, that you may later confirm whether you're working with a fresh deployment:
 ```
@@ -147,7 +172,7 @@ You should receive a response like the following, which indicates a block height
 {"id":2,"jsonrpc":"2.0","result":"0xf8a46d"}
 ```
 
-#### Publish the package ###
+### Publish the package ###
 
 For first-time setup, visit [GitHub Developer Settings](https://github.com/settings/tokens) and create a new _personal access token (classic)_ with privileges to the _GitHub Package Repository_.  Set a reasonable expiration; the default is 7 days.  Record the token somewhere safe.
 
