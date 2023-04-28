@@ -67,8 +67,6 @@ Private Keys
 (15) 0xd332a346e8211513373b7ddcf94b2b513b934b901258a9465c76d0d9a2b676d8
 ```
 
-Let's `export DEPLOY_ADDRESS=0xeeDC2EE00730314b7d7ddBf7d19e81FB7E5176CA` to use the last account for deployment.
-
 With the testchain up, run the following command to check your ETH balance:
 ```
 curl 0.0.0.0:8555 -X POST -H "Content-Type: application/json" --data '{
@@ -98,12 +96,12 @@ Record addresses printed by the deployment script here:
 === Local Testchain Addresses ===
 AJNA token      0x25Af17eF4E2E6A4A2CE586C9D25dF87FD84D4a7d
 GrantFund       0xE340B87CEd1af1AbE1CE8D617c84B7f168e3b18b
-ERC20 factory   0xC01c2D208ebaA1678F14818Db7A698F11cd0B6AB
-ERC721 factory  0x325Cf36179A4d55F09bE9d3C2E1f4337d49A9f2b
-PoolInfoUtils   0x12865F86F31e674738192cd3AE154485A6FCB2b6
-PositionManager 0x06F4dC71a0029E31141fa23988735950324A48C7
-RewardsManager  0x9EF8ad06546EE0FbCB9927bC015b0ce7159c2e1e
-TokensFactory   0x6c5c7fD98415168ada1930d44447790959097482
+ERC20 factory   0x06F4dC71a0029E31141fa23988735950324A48C7
+ERC721 factory  0x9EF8ad06546EE0FbCB9927bC015b0ce7159c2e1e
+PoolInfoUtils   0xD86c4A8b172170Da0d5C0C1F12455bA80Eaa42AD
+PositionManager 0x9617ABE221F9A9c492D5348be56aef4Db75A692d
+RewardsManager  0x4f05DA51eAAB00e5812c54e370fB95D4C9c51F21
+TokensFactory   0xF05cDdE17A671957f4AA672bcB96329Ef514E114
 ```
 
 ### Create test tokens and pools ###
@@ -126,19 +124,19 @@ To facilitate testing, create some test tokens and pools.  Export `TOKENSFACTORY
 
 Output should look like this:
 ```
-Deployed TWETH to 0x78269142d81cb04994305c441a48c0b385b0f522
-Deployed TDAI  to 0xf972eeb9edd1e02ccf66e05a4fb0343417c47c1e
-Deployed TWBTC to 0x6dde729d45bd4a274fecb90e87b6b17587e80344
-Deployed TUSDC to 0x437d720dd77d5ad6dd05b86bfe717f35bfba6c57
-Deployed TESTA to 0x0024c6b5ece098700085fd329fb66d3b995925b1
-Deployed TESTB to 0x547608ebae2c147b2321cc8d03012f8a2c77a066
-Deployed TESTC to 0xb34ba81dc885068cf8d76ad047b8d6c4518eb7ae
-Deployed TESTD to 0xe9228f9184a361316a30a589b2e4a3c644cfc53c
+Deployed TWETH to 0x6bc99fa34d0076377731049695180e53bcdd767f
+Deployed TDAI  to 0xc041d30870cfdeedfac49da86aefb9cffa833d65
+Deployed TWBTC to 0xd1219094f2a3f2677ec58ad39390221907a972ab
+Deployed TUSDC to 0xd34fd39560f75d2d52db894db2dde285945768bc
+Deployed TESTA to 0x9b3d4d0d039cd7a32b6aa66fd88862d0f041ade8
+Deployed TESTB to 0x8c36b4016308d96dc9f7627d08ba34649e1fba9e
+Deployed TESTC to 0xdb33d9f9ab5defa28e12d4db69dc73cdc1931be6
+Deployed TESTD to 0x0d867b78123e4b08abf92324fc21fabc3a39d447
 
-TESTA-TDAI pool deployed to 0x40bcaf0006919b5620f7a9cd1734d52b3537cf95
-TESTB-TDAI pool deployed to 0x3ac7e61149c5fba6f46af6ca04e78e568a8c5347
-TESTC-TDAI pool deployed to 0xcef8c1dbe5c958da6358e183984a99b7576e47fb
-TESTD-TDAI pool deployed to 0xf952c260b9a4167d6a5bb5ea4d6cdd898993c3bc
+TESTA-TDAI pool deployed to 0x097ad5d3c68dad8da717091bd17eaafa75b61d6f
+TESTB-TDAI pool deployed to 0x3bfdbb510a882eabacb42813c5551fe5deab75e5
+TESTC-TDAI pool deployed to 0xf728729f486abea31ea4b8d6d5dcb0e8e8e5c4b0
+TESTD-TDAI pool deployed to 0xb7b610998d9eb8daed8b8e2607258cbf647032d3
 
 Provisioning tokens to lender 0xbC33716Bb8Dc2943C0dFFdE1F0A1d2D66F33515E
 Lender has 100000 TDAI
@@ -151,7 +149,7 @@ Pool size: 25000
 
 Approving POOLA to spend borrower's tokens
 Borrower drawing debt
-Pool debt: 10009.615400485525712308
+Pool debt: 10009.615384615384620000
 ```
 Ensure pool size and pool debt is appropriate.
 After execution, update the text above with new token and pool addresses.
