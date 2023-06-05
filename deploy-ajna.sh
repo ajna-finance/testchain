@@ -47,7 +47,6 @@ cast send ${AJNA_TOKEN} "burn(uint256)" 1000000000ether --from $DEPLOY_ADDRESS -
 
 # deploy GrantFund
 # modify source to set correct AJNA_TOKEN address
-sed -i -E "s/(ajnaTokenAddress = )0x[0-9A-Fa-f]+/\1${AJNA_TOKEN}/" src/grants/base/Funding.sol || fail
 deploy_cmd="forge script script/GrantFund.s.sol:DeployGrantFund \
 	            --rpc-url ${ETH_RPC_URL} --sender ${DEPLOY_ADDRESS} --private-key ${DEPLOY_RAWKEY} --broadcast -vvv"
 output=$(${deploy_cmd})
@@ -59,6 +58,11 @@ else
     echo Could not determine GrantFund address.
     popd && fail
 fi
+
+# fund GrantFund with 300mm AJNA
+cast send ${AJNA_TOKEN} "approve(address,uint256)" ${GRANTFUND} 300000000ether --from $DEPLOY_ADDRESS --private-key $DEPLOY_RAWKEY > /dev/null
+cast send ${GRANTFUND} "fundTreasury(uint256)" 300000000ether --from $DEPLOY_ADDRESS --private-key $DEPLOY_RAWKEY > /dev/null
+
 
 # deploy everything in the contracts repository
 pushd ../contracts
