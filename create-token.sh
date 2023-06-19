@@ -5,8 +5,8 @@ export ETH_RPC_URL=http://0.0.0.0:8555
 export DEPLOY_ADDRESS=0xeeDC2EE00730314b7d7ddBf7d19e81FB7E5176CA
 export DEPLOY_RAWKEY=0xd332a346e8211513373b7ddcf94b2b513b934b901258a9465c76d0d9a2b676d8
 
-token_name=${1:-"TestToken"}  # CAUTION: no spaces
-token_symbol=${2:-"TEST"}
+token_name=${1:-TestToken}  # CAUTION: no spaces
+token_symbol=${2:-TEST}
 decimals=${3:-18}
 mint_to=${4:-${DEPLOY_ADDRESS}}
 amount=${5:-1000000ether}
@@ -26,7 +26,7 @@ if [[ -z ${TOKENSFACTORY} ]]; then fail "please set TOKENSFACTORY address"; fi
 
 # create the token
 cmd="cast send ${TOKENSFACTORY} createERC20Token(string,string,uint8) 
-    \"${token_name}\" \"${token_symbol}\" ${decimals} \
+    ${token_name} ${token_symbol} ${decimals} \
     --from ${DEPLOY_ADDRESS} --private-key ${DEPLOY_RAWKEY}"
 output=$(${cmd})
 log "${output}"
