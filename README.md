@@ -174,13 +174,11 @@ You should receive a response like the following, which indicates a block height
 
 For first-time setup, visit [GitHub Developer Settings](https://github.com/settings/tokens) and create a new _personal access token (classic)_ with privileges to the _GitHub Package Repository_.  Set a reasonable expiration; the default is 7 days.  Record the token somewhere safe.
 
-To authenticate, run `docker login ghcr.io` using your GitHub username and paste your GitHub token as the password.
+To authenticate, run `docker login ghcr.io` using your GitHub username and paste your GitHub token as the password.  To publish, run the publishing script passing the release label as an argument:
+```
+./publish.sh rc6
+```
 
-To push the package to the GitHub Container Repository:
-```
-docker commit ajna-testnet ghcr.io/ajna-finance/ajna-testnet:<tag>
-docker push ghcr.io/ajna-finance/ajna-testnet:<tag>
-```
 Visit [Ajna packages](https://github.com/orgs/ajna-finance/packages) and confirm the package has updated.
 
 ## Maintenance ##
@@ -189,3 +187,4 @@ Attach a shell to the bootnode:
 ```
 docker exec -it <image_name> /bin/sh
 ```
+
