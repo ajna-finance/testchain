@@ -206,3 +206,5 @@ Attach a shell to the bootnode:
 docker exec -it <image_name> /bin/sh
 ```
 
+## Usage ##
+To use the container, consumer must set `MAINNET_FORK_URL` in their environment.  This is a mainnet node used by ganache to maintain the fork.  It was renamed to avoid collision with consumer's `ETH_RPC_URL`, which would point to this ganache instance.
