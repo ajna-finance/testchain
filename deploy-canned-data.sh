@@ -12,14 +12,14 @@ export BORROWER_ADDRESS=0xD293C11Cd5025cd7B2218e74fd8D142A19833f74
 export BORROWER_KEY=0x997f91a295440dc31eca817270e5de1817cf32fa99adc0890dc71f8667574391
 
 # Deploy tokens
-TWETH=$(./create-token.sh "TestWrappedETH" TWETH 18 $DEPLOY_ADDRESS 1000ether 1)
-TDAI=$(./create-token.sh "TestDai" TDAI 18 $DEPLOY_ADDRESS 500000ether 1)
-TWBTC=$(./create-token.sh "TestWrappedBTC" TWBTC 8 $DEPLOY_ADDRESS 25ether 1)
-TUSDC=$(./create-token.sh "TestUSDC" TUSDC 6 $DEPLOY_ADDRESS 500000ether 1)
-TESTA=$(./create-token.sh "TestTokenA" TESTA 18 $DEPLOY_ADDRESS 1000000ether 1)
-TESTB=$(./create-token.sh "TestTokenB" TESTB 18 $DEPLOY_ADDRESS 1000000ether 1)
-TESTC=$(./create-token.sh "TestTokenC" TESTC 18 $DEPLOY_ADDRESS 1000000ether 1)
-TESTD=$(./create-token.sh "TestTokenD" TESTD 18 $DEPLOY_ADDRESS 1000000ether 1)
+TWETH=$(./create-token.sh TestWrappedETH TWETH 18 $DEPLOY_ADDRESS 1000ether 1)
+TDAI=$(./create-token.sh TestDai TDAI 18 $DEPLOY_ADDRESS 500000ether 1)
+TWBTC=$(./create-token.sh TestWrappedBTC TWBTC 8 $DEPLOY_ADDRESS 25ether 1)
+TUSDC=$(./create-token.sh TestUSDC TUSDC 6 $DEPLOY_ADDRESS 500000ether 1)
+TESTA=$(./create-token.sh TestTokenA TESTA 18 $DEPLOY_ADDRESS 1000000ether 1)
+TESTB=$(./create-token.sh TestTokenB TESTB 18 $DEPLOY_ADDRESS 1000000ether 1)
+TESTC=$(./create-token.sh TestTokenC TESTC 18 $DEPLOY_ADDRESS 1000000ether 1)
+TESTD=$(./create-token.sh TestTokenD TESTD 18 $DEPLOY_ADDRESS 1000000ether 1)
 echo "Deployed TWETH to ${TWETH}"
 echo "Deployed TDAI  to ${TDAI}"
 echo "Deployed TWBTC to ${TWBTC}"
