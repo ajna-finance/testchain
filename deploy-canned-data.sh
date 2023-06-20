@@ -35,28 +35,54 @@ POOLA=$(./create-erc20-pool.sh $TESTA $TDAI 1)
 POOLB=$(./create-erc20-pool.sh $TESTB $TDAI 1)
 POOLC=$(./create-erc20-pool.sh $TESTC $TDAI 1)
 POOLD=$(./create-erc20-pool.sh $TESTD $TDAI 1)
+POOLWBTCDAI=$(./create-erc20-pool.sh $TWBTC $TDAI 1)  # 8-18 decimal pool
+POOLWETHUSDC=$(./create-erc20-pool.sh $TWETH $TUSDC 1) # 18-6 decimal pool
+POOLWBTCUSDC=$(./create-erc20-pool.sh $TWBTC $TUSDC 1) # 8-6 decimal pool
 echo TESTA-TDAI pool deployed to $POOLA
 echo TESTB-TDAI pool deployed to $POOLB
 echo TESTC-TDAI pool deployed to $POOLC
 echo TESTD-TDAI pool deployed to $POOLD
+echo TWBTC-TDAI pool deployed to $POOLWBTCDAI
+echo TWETH-TUSDC pool deployed to $POOLWETHUSDC
+echo TWBTC-TUSDC pool deployed to $POOLWBTCUSDC
 echo
 
 # Provision tokens to actors
-echo Provisioning tokens to lender $LENDER_ADDRESS
-cast send $TESTA "transfer(address,uint256)" $LENDER_ADDRESS 20ether --from $DEPLOY_ADDRESS --private-key $DEPLOY_RAWKEY > /dev/null
-cast send $TDAI "transfer(address,uint256)" $LENDER_ADDRESS 100000ether --from $DEPLOY_ADDRESS --private-key $DEPLOY_RAWKEY > /dev/null
-echo Lender has $( cast --to-unit $( cast call $TDAI "balanceOf(address)(uint256)" $LENDER_ADDRESS ) ether ) TDAI
-
-echo Provisioning tokens to borrower $BORROWER_ADDRESS
-cast send $TESTA "transfer(address,uint256)" $BORROWER_ADDRESS 4000ether --from $DEPLOY_ADDRESS --private-key $DEPLOY_RAWKEY > /dev/null
-cast send $TDAI "transfer(address,uint256)" $BORROWER_ADDRESS 300ether --from $DEPLOY_ADDRESS --private-key $DEPLOY_RAWKEY > /dev/null
-echo Borrower has $( cast --to-unit $( cast call $TESTA "balanceOf(address)(uint256)" $BORROWER_ADDRESS ) ether ) TESTA
+eoas=(
+    ${LENDER_ADDRESS}
+    ${BORROWER_ADDRESS}
+    "0xb240043d57f11a0253743566C413bB8B068cb1F2"
+    "0x6f386a7a0EF33b7927bBF86bf06414884a3FDFE5"
+    "0x122230509E5bEEd0ea3c20f50CC87e0CdB9d7e1b"
+    "0xB932C1F1C422D39310d0cb6bE57be36D356fc0c8"
+    "0x9A7212047c046a28E699fd8737F2b0eF0F94B422"
+    "0x7CA0e91795AD447De38E4ab03b8f1A829F38cA58"
+    "0xd21BB9dEF715C0E7A1b7F18496F2475bcDeFA1Be"
+    "0xef62E4A54bE04918f435b7dF83c01138521C009b"
+    "0xAecE01e5Ba6B171455B97FBA91b33E1b138AF60c"
+    "0x9D3904CD72d3BDb97C3B2e266A60aBe127B6F940"
+    "0x2636aD85Da87Ff3780e1eC5e48fC0aBa33849B16"
+    "0x81fFF6A381bF1aC11ed388124186C177Eb8623f4"
+    "0x8596d963e0DEBCa873A56FbDd2C9d119Aa0eB443"
+    "0xeeDC2EE00730314b7d7ddBf7d19e81FB7E5176CA"
+)
+for address in ${eoas[@]}; do
+    echo Provisioning tokens to $address
+    cast send $TWETH "transfer(address,uint256)" $address 50ether --from $DEPLOY_ADDRESS --private-key $DEPLOY_RAWKEY > /dev/null
+    cast send $TDAI "transfer(address,uint256)" $address 200000ether --from $DEPLOY_ADDRESS --private-key $DEPLOY_RAWKEY > /dev/null
+    cast send $TWBTC "transfer(address,uint256)" $address 400000000 --from $DEPLOY_ADDRESS --private-key $DEPLOY_RAWKEY > /dev/null    # 4 TWBTC
+    cast send $TUSDC "transfer(address,uint256)" $address 300000000000 --from $DEPLOY_ADDRESS --private-key $DEPLOY_RAWKEY > /dev/null # 300_000 USDC
+    cast send $TESTA "transfer(address,uint256)" $address 11000ether --from $DEPLOY_ADDRESS --private-key $DEPLOY_RAWKEY > /dev/null
+    cast send $TESTB "transfer(address,uint256)" $address 12000ether --from $DEPLOY_ADDRESS --private-key $DEPLOY_RAWKEY > /dev/null
+    cast send $TESTC "transfer(address,uint256)" $address 13000ether --from $DEPLOY_ADDRESS --private-key $DEPLOY_RAWKEY > /dev/null
+    cast send $TESTD "transfer(address,uint256)" $address 14000ether --from $DEPLOY_ADDRESS --private-key $DEPLOY_RAWKEY > /dev/null
+done
 echo
 
 # Add liquidity
 echo Approving POOLA to spend lender\'s tokens
 cast send $TESTA "approve(address,uint256)" $POOLA 20ether --from $LENDER_ADDRESS --private-key $LENDER_KEY > /dev/null
-cast send $TDAI "approve(address,uint256)" $POOLA 100000000ether --from $LENDER_ADDRESS --private-key $LENDER_KEY > /dev/null
+cast send $TDAI "approve(address,uint256)" $POOLA 200000ether --from $LENDER_ADDRESS --private-key $LENDER_KEY > /dev/null
 echo Lender adding liquidity
 # TIMESTAMP=$(printf "%d" $(cast rpc eth_getBlockByNumber "latest" "false" | jq '.timestamp'))
 TIMESTAMP=$(date -u +%s)
@@ -78,4 +104,14 @@ DEBT=10000; PRICE=100; CR=1.3
 COLLATERAL=$(echo "$DEBT / $PRICE * $CR / 1" | bc)
 cast send $POOLA "drawDebt(address,uint256,uint256,uint256)" $BORROWER_ADDRESS ${DEBT}ether 3260 ${COLLATERAL}ether --from $BORROWER_ADDRESS --private-key $BORROWER_KEY --gas-limit 1000000 > /dev/null
 echo Pool debt: $( cast --to-unit $(cast call $POOLA "debtInfo()(uint256,uint256,uint256)" | head -1) ether )
+echo
+
+# Take an EVM snapshot
+echo Taking evm_snapshot of initial state
+# curl ${ETH_RPC_URL} -X POST -H "Content-Type: application/json" --data '{
+#     "jsonrpc": "2.0", "id":1,
+#     "method": "evm_snapshot",
+#     "params":[]
+# }'
+cast rpc evm_snapshot
 echo
