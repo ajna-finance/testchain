@@ -64,7 +64,6 @@ eoas=(
     "0x2636aD85Da87Ff3780e1eC5e48fC0aBa33849B16"
     "0x81fFF6A381bF1aC11ed388124186C177Eb8623f4"
     "0x8596d963e0DEBCa873A56FbDd2C9d119Aa0eB443"
-    "0xeeDC2EE00730314b7d7ddBf7d19e81FB7E5176CA"
 )
 for address in ${eoas[@]}; do
     echo Provisioning tokens to $address
@@ -108,10 +107,5 @@ echo
 
 # Take an EVM snapshot
 echo Taking evm_snapshot of initial state
-# curl ${ETH_RPC_URL} -X POST -H "Content-Type: application/json" --data '{
-#     "jsonrpc": "2.0", "id":1,
-#     "method": "evm_snapshot",
-#     "params":[]
-# }'
 cast rpc evm_snapshot
 echo

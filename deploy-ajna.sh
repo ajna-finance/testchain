@@ -63,7 +63,8 @@ fi
 cast send ${AJNA_TOKEN} "approve(address,uint256)" ${GRANTFUND} 300000000ether --from $DEPLOY_ADDRESS --private-key $DEPLOY_RAWKEY > /dev/null
 cast send ${GRANTFUND} "fundTreasury(uint256)" 300000000ether --from $DEPLOY_ADDRESS --private-key $DEPLOY_RAWKEY > /dev/null
 
-# TODO: call startDistributionPeriod()
+# start a new distribution period
+cast send ${GRANTFUND} "startNewDistributionPeriod()" --from $DEPLOY_ADDRESS --private-key $DEPLOY_RAWKEY > /dev/null
 
 
 # deploy everything in the contracts repository
