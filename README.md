@@ -96,12 +96,12 @@ Record addresses printed by the deployment script here:
 === Local Testchain Addresses ===
 AJNA token      0x25Af17eF4E2E6A4A2CE586C9D25dF87FD84D4a7d
 GrantFund       0xE340B87CEd1af1AbE1CE8D617c84B7f168e3b18b
-ERC20 factory   0xD86c4A8b172170Da0d5C0C1F12455bA80Eaa42AD
-ERC721 factory  0x9617ABE221F9A9c492D5348be56aef4Db75A692d
-PoolInfoUtils   0x4f05DA51eAAB00e5812c54e370fB95D4C9c51F21
-PositionManager 0x6c5c7fD98415168ada1930d44447790959097482
-RewardsManager  0x6548dF23A854f72335902e58a1e59B50bb3f11F1
-TokensFactory   0x19156129c660883435Cad95100D025022443EDb2
+ERC20 factory   0x9617ABE221F9A9c492D5348be56aef4Db75A692d
+ERC721 factory  0x4f05DA51eAAB00e5812c54e370fB95D4C9c51F21
+PoolInfoUtils   0x6c5c7fD98415168ada1930d44447790959097482
+PositionManager 0x6548dF23A854f72335902e58a1e59B50bb3f11F1
+RewardsManager  0xdF7403003a16c49ebA5883bB5890d474794cea5a
+TokensFactory   0x9a56e5e70373E4965AAAFB994CB58eDC577031D7
 ```
 
 ### Create test tokens and pools ###
@@ -124,24 +124,38 @@ To facilitate testing, create some test tokens and pools.  Export `TOKENSFACTORY
 
 Output should look like this:
 ```
-Deployed TWETH to 0xc208f8196f1e1696b07ea9407ed0555fdbc37c2e
-Deployed TDAI  to 0x94f6aae460917f8b64bdf94453ed34c2a49c4e10
-Deployed TWBTC to 0xeb8770c2ebff109a8a9b3f248c656df2d717204b
-Deployed TUSDC to 0x8040115fa9cccad2cc0f16dcdf231594c69e987d
-Deployed TESTA to 0x673f06730df07d7b90e236092c3a501022083a31
-Deployed TESTB to 0x2622ebc317f21ec07dcf047593d6be8128cf991c
-Deployed TESTC to 0x00b339c4d0c4f472cbc269c5b79d98faad4bfda3
-Deployed TESTD to 0x51753f1052c180daa9d3dde0e5e4ad86497476fc
+Deployed TWETH to 0x844f3C269f301f89D81f29B91b8d8ED2C69Fa7Bc
+Deployed TDAI  to 0x4cEDCBb309d1646F3E91FB00c073bB28225262E6
+Deployed TWBTC to 0x983e8657Fb6450fca862a96BcAF461Ede2AaAE27
+Deployed TUSDC to 0x606A640CB77AeCBfefe918AebDCB34845FF18546
+Deployed TESTA to 0xf6C45B3B42b910110B1c750C959D0a396470c520
+Deployed TESTB to 0x3f2D7987bffe953f071273F3ABc99154ba3BAE99
+Deployed TESTC to 0x29eb88824f9F118B2aA975F6919D4a85189c9823
+Deployed TESTD to 0x1353F826e463782e084cf1f238662E40D32DD29d
 
-TESTA-TDAI pool deployed to 0x9b77d3c37fedb8d1d8cf5174708ed56163ad8fe4
-TESTB-TDAI pool deployed to 0x3578b4489fe9ee07fd1d62f767ddcdf2b99ea511
-TESTC-TDAI pool deployed to 0xc28d5d48ba711f464044bd983da7a89d8285a686
-TESTD-TDAI pool deployed to 0x4c6041dbf60cbc7b947e8837ecd44525da170ab0
+TESTA-TDAI pool deployed to 0x845e5B204859f61b1EE99D60A9ff440d972Cde1C
+TESTB-TDAI pool deployed to 0x46f65d2c707ea9c15D398889cEF64C0C373bFdA7
+TESTC-TDAI pool deployed to 0x066E979d2533443E14Bb17807c5a94c532c2E9ec
+TESTD-TDAI pool deployed to 0xe8dCc8FbAb00cF7911944dE5f9080Ecd9f25d3A9
+TWBTC-TDAI pool deployed to 0xa390765fB18EdCBC15dc9e2d56D9FC33c1a3FAcb
+TWETH-TUSDC pool deployed to 0x59e75F304a499cBa0FF2cd4eC7eee445B964F2B8
+TWBTC-TUSDC pool deployed to 0x5c6631E917f89882294F3edD18A067E47c9093cE
 
-Provisioning tokens to lender 0xbC33716Bb8Dc2943C0dFFdE1F0A1d2D66F33515E
-Lender has 100000 TDAI
-Provisioning tokens to borrower 0xD293C11Cd5025cd7B2218e74fd8D142A19833f74
-Borrower has 4000 TESTA
+Provisioning tokens to 0xbC33716Bb8Dc2943C0dFFdE1F0A1d2D66F33515E
+Provisioning tokens to 0xD293C11Cd5025cd7B2218e74fd8D142A19833f74
+Provisioning tokens to 0xb240043d57f11a0253743566C413bB8B068cb1F2
+Provisioning tokens to 0x6f386a7a0EF33b7927bBF86bf06414884a3FDFE5
+Provisioning tokens to 0x122230509E5bEEd0ea3c20f50CC87e0CdB9d7e1b
+Provisioning tokens to 0xB932C1F1C422D39310d0cb6bE57be36D356fc0c8
+Provisioning tokens to 0x9A7212047c046a28E699fd8737F2b0eF0F94B422
+Provisioning tokens to 0x7CA0e91795AD447De38E4ab03b8f1A829F38cA58
+Provisioning tokens to 0xd21BB9dEF715C0E7A1b7F18496F2475bcDeFA1Be
+Provisioning tokens to 0xef62E4A54bE04918f435b7dF83c01138521C009b
+Provisioning tokens to 0xAecE01e5Ba6B171455B97FBA91b33E1b138AF60c
+Provisioning tokens to 0x9D3904CD72d3BDb97C3B2e266A60aBe127B6F940
+Provisioning tokens to 0x2636aD85Da87Ff3780e1eC5e48fC0aBa33849B16
+Provisioning tokens to 0x81fFF6A381bF1aC11ed388124186C177Eb8623f4
+Provisioning tokens to 0x8596d963e0DEBCa873A56FbDd2C9d119Aa0eB443
 
 Approving POOLA to spend lender's tokens
 Lender adding liquidity
@@ -150,7 +164,11 @@ Pool size: 25000
 Approving POOLA to spend borrower's tokens
 Borrower drawing debt
 Pool debt: 10009.615400485525712308
+
+Taking evm_snapshot of initial state
+"0x1"
 ```
+
 Ensure pool size and pool debt is appropriate.
 After execution, update the text above with new token and pool addresses.
 
@@ -188,3 +206,5 @@ Attach a shell to the bootnode:
 docker exec -it <image_name> /bin/sh
 ```
 
+## Usage ##
+To use the container, consumer must set `MAINNET_FORK_URL` in their environment.  This is a mainnet node used by ganache to maintain the fork.  It was renamed to avoid collision with consumer's `ETH_RPC_URL`, which would point to this ganache instance.
