@@ -1,17 +1,20 @@
-# Testchain #
+# Testchain
+
 The purpose of this project is to set up a local testchain for testing Ajna deployment and integration testing.
 
-## Prerequisites ##
-* `docker` and `docker-compose`
-* a mainnet Ethereum node to create the fork
-* `foundry` tools (installation documented in `contracts` repository)
-* `bc` and `jq` tools
+## Prerequisites
 
-## Setup ##
+- `docker` and `docker-compose`
+- a mainnet Ethereum node to create the fork
+- `foundry` tools (installation documented in `contracts` repository)
+- `bc` and `jq` tools
 
-First, set `ETH_RPC_URL` to a mainnet node.  The docker container will use this to fork mainnet.
+## Setup
 
-Then, clone the following Ajna GitHub repositories.  Either check them out in the same location you cloned this `testchain` repository, or establish symlinks as needed.
+First, set `ETH_RPC_URL` to a mainnet node. The docker container will use this to fork mainnet.
+
+Then, clone the following Ajna GitHub repositories. Either check them out in the same location you cloned this `testchain` repository, or establish symlinks as needed.
+
 - https://github.com/ajna-finance/contracts
 - https://github.com/ajna-finance/ecosystem-coordination
 - https://github.com/ajna-finance/tokens-factory
@@ -19,7 +22,8 @@ Then, clone the following Ajna GitHub repositories.  Either check them out in th
 In each repository, switch to whichever branch is appropriate for the testchain, and `make build`.
 Because `forge script` arguments conflict with _foundry_ configuration, comment out `block_number` and `fork_block_number` in `foundry.toml`.
 
-### Create a docker image with a local testnet ###
+### Create a docker image with a local testnet
+
 The included `docker-compose.yml` creates a single instance of `ganache` and uses a wallet seed for consistant account generation.
 
 ```
@@ -27,6 +31,7 @@ docker-compose up
 ```
 
 Here are the accounts and private keys available for seed 20070213:
+
 ```
 Available Accounts
 ==================
@@ -68,9 +73,10 @@ Private Keys
 ```
 
 With the testchain up, run the following command to check your ETH balance:
+
 ```
 curl 0.0.0.0:8555 -X POST -H "Content-Type: application/json" --data '{
-    "jsonrpc": "2.0", "id":1, 
+    "jsonrpc": "2.0", "id":1,
     "method": "eth_getBalance",
     "params": [
         "'${DEPLOY_ADDRESS}'",
@@ -80,18 +86,21 @@ curl 0.0.0.0:8555 -X POST -H "Content-Type: application/json" --data '{
 ```
 
 You should receive the following response, indicating the account has 1000 ETH, and, more importantly, that you can send JSON-RPC requests to the container.
+
 ```
 {"jsonrpc":"2.0","id":4,"result":"0x3635c9adc5dea00000"}
 ```
+
 If you already deployed Ajna to the endpoint, it should return a slightly smaller number.
 
-### Deploy Ajna to the testnet ###
+### Deploy Ajna to the testnet
 
 ```
 ./deploy-ajna.sh
 ```
 
 Record addresses printed by the deployment script here:
+
 ```
 === Local Testchain Addresses ===
 AJNA token      0x25Af17eF4E2E6A4A2CE586C9D25dF87FD84D4a7d
@@ -104,25 +113,29 @@ RewardsManager  0xdF7403003a16c49ebA5883bB5890d474794cea5a
 TokensFactory   0x9a56e5e70373E4965AAAFB994CB58eDC577031D7
 ```
 
-### Create test tokens and pools ###
+### Create test tokens and pools
 
-To facilitate testing, create some test tokens and pools.  Export `TOKENSFACTORY` and `ERC20FACTORY` to addresses from above, and then run `./deploy-canned-data.sh`.  This script will create several artifacts:
-* 8 test tokens: 4 mimicing popular tokens with appropriate decimal places, and 4 with no implied price.  All tokens get minted to address[0] from the list above.
-* 4 pools:
-  * `TESTA-DAI` - Assume market price of TESTA is 100 DAI.  Lender 0xbC33716Bb8Dc2943C0dFFdE1F0A1d2D66F33515E adds liquidity to buckets as follows:
-    | index | price   | deposit | collateral |
+To facilitate testing, create some test tokens and pools. Export `TOKENSFACTORY` and `ERC20FACTORY` to addresses from above, and then run `./deploy-canned-data.sh`. This script will create several artifacts:
+
+- 8 test tokens: 4 mimicing popular tokens with appropriate decimal places, and 4 with no implied price. All tokens get minted to address[0] from the list above.
+- 4 pools:
+
+  - `TESTA-DAI` - Assume market price of TESTA is 100 DAI. Lender 0xbC33716Bb8Dc2943C0dFFdE1F0A1d2D66F33515E adds liquidity to buckets as follows:
+    | index | price | deposit | collateral |
     |-------|--------:|--------:|-----------:|
-    | 3220  | 106.520 | 0       | 3.1        |
-    | 3236  |  98.350 | 8000    | 0          |
-    | 3242  |  95.450 | 12000   | 0          |
-    | 3261  |  86.821 | 5000    | 0          |
+    | 3220 | 106.520 | 0 | 3.1 |
+    | 3236 | 98.350 | 8000 | 0 |
+    | 3242 | 95.450 | 12000 | 0 |
+    | 3261 | 86.821 | 5000 | 0 |
 
     Borrower 0xD293C11Cd5025cd7B2218e74fd8D142A19833f74 draws 10k debt, bringing LUP index to 3242.
-  * `TESTB-DAI` - empty pool
-  * `TESTC-DAI` - empty pool
-  * `TESTD-DAI` - empty pool
+
+  - `TESTB-DAI` - empty pool
+  - `TESTC-DAI` - empty pool
+  - `TESTD-DAI` - empty pool
 
 Output should look like this:
+
 ```
 Deployed TWETH to 0x844f3C269f301f89D81f29B91b8d8ED2C69Fa7Bc
 Deployed TDAI  to 0x4cEDCBb309d1646F3E91FB00c073bB28225262E6
@@ -172,10 +185,10 @@ Taking evm_snapshot of initial state
 Ensure pool size and pool debt is appropriate.
 After execution, update the text above with new token and pool addresses.
 
-
-### Persist changes ###
+### Persist changes
 
 Check the block height, that you may later confirm whether you're working with a fresh deployment:
+
 ```
 curl 0.0.0.0:8555 -X POST -H "Content-Type: application/json" --data '{
     "jsonrpc": "2.0", "id":2,
@@ -183,28 +196,53 @@ curl 0.0.0.0:8555 -X POST -H "Content-Type: application/json" --data '{
     "params":[]
 }'
 ```
+
 You should receive a response like the following, which indicates a block height of 16295021:
+
 ```
 {"id":2,"jsonrpc":"2.0","result":"0xf8a46d"}
 ```
 
-### Publish the package ###
+### Publish the package
 
-For first-time setup, visit [GitHub Developer Settings](https://github.com/settings/tokens) and create a new _personal access token (classic)_ with privileges to the _GitHub Package Repository_.  Set a reasonable expiration; the default is 7 days.  Record the token somewhere safe.
+For first-time setup, visit [GitHub Developer Settings](https://github.com/settings/tokens) and create a new _personal access token (classic)_ with privileges to the _GitHub Package Repository_. Set a reasonable expiration; the default is 7 days. Record the token somewhere safe.
 
-To authenticate, run `docker login ghcr.io` using your GitHub username and paste your GitHub token as the password.  To publish, run the publishing script passing the release label as an argument:
+To authenticate, run `docker login ghcr.io` using your GitHub username and paste your GitHub token as the password. To publish, run the publishing script passing the release label as an argument:
+
 ```
 ./publish.sh rc6
 ```
 
 Visit [Ajna packages](https://github.com/orgs/ajna-finance/packages) and confirm the package has updated.
 
-## Maintenance ##
+## Maintenance
 
 Attach a shell to the bootnode:
+
 ```
 docker exec -it <image_name> /bin/sh
 ```
 
-## Usage ##
-To use the container, consumer must set `MAINNET_FORK_URL` in their environment.  This is a mainnet node used by ganache to maintain the fork.  It was renamed to avoid collision with consumer's `ETH_RPC_URL`, which would point to this ganache instance.
+## Usage
+
+To use the container, consumer must set `MAINNET_FORK_URL` in their environment. This is a mainnet node used by ganache to maintain the fork. It was renamed to avoid collision with consumer's `ETH_RPC_URL`, which would point to this ganache instance.
+
+## Utility Scripts
+
+To jump in time with `evm_increaseTime`
+
+```
+./jump.sh NUMBER_OF_SECONDS YOUR_GANACHE_URL
+```
+
+To reset to the initial snapshot. Be aware that Subgraph doesn't work well with Ganache and after reverting to snapshot, all Subgraph's data will remain.
+
+```
+./reset.sh YOUR_GANACHE_URL
+```
+
+To check the latest block number and block time
+
+```
+./getBlockTime.sh YOUR_GANACHE_URL
+```
