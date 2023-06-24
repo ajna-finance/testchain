@@ -1,7 +1,13 @@
 #!/bin/bash
 
-# Define the Ganache URL
-GANACHE_URL="https://aditi.ajna.finance:8553/"
+# Define the Ganache URL (provided as a command-line argument)
+GANACHE_URL=$1
+
+# Check if the ganache argument is provided
+if [ -z "$GANACHE_URL" ]; then
+    echo "Please provide the ganache url as a command-line argument."
+    exit 1
+fi
 
 # Call eth_blockNumber to get the latest block number
 block_number_response=$(curl -s -X POST --data '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}' $GANACHE_URL)
