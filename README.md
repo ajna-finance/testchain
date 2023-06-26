@@ -91,7 +91,6 @@ If you already deployed Ajna to the endpoint, it should return a slightly smalle
 Record addresses printed by the deployment script here:
 ```
 === Local Testchain Addresses ===
-=== Local Testchain Addresses ===
 AJNA token      0x178b1E1fB424A374d0383aFB68d836ed3a9394E5
 GrantFund       0xC01c2D208ebaA1678F14818Db7A698F11cd0B6AB
 ERC20 factory   0xE135E89909717DA4fDe24143F509118ceA5fc3f7
