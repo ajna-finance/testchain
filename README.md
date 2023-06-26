@@ -3,15 +3,12 @@ The purpose of this project is to set up a local testchain for testing Ajna depl
 
 ## Prerequisites ##
 * `docker` and `docker-compose`
-* a mainnet Ethereum node to create the fork
 * `foundry` tools (installation documented in `contracts` repository)
 * `bc` and `jq` tools
 
 ## Setup ##
 
-First, set `ETH_RPC_URL` to a mainnet node.  The docker container will use this to fork mainnet.
-
-Then, clone the following Ajna GitHub repositories.  Either check them out in the same location you cloned this `testchain` repository, or establish symlinks as needed.
+Clone the following Ajna GitHub repositories.  Either check them out in the same location you cloned this `testchain` repository, or establish symlinks as needed.
 - https://github.com/ajna-finance/contracts
 - https://github.com/ajna-finance/ecosystem-coordination
 - https://github.com/ajna-finance/tokens-factory
@@ -94,20 +91,15 @@ If you already deployed Ajna to the endpoint, it should return a slightly smalle
 Record addresses printed by the deployment script here:
 ```
 === Local Testchain Addresses ===
-AJNA token      0x25Af17eF4E2E6A4A2CE586C9D25dF87FD84D4a7d
-GrantFund       0xE340B87CEd1af1AbE1CE8D617c84B7f168e3b18b
-ERC20 factory   0x9617ABE221F9A9c492D5348be56aef4Db75A692d
-ERC721 factory  0x4f05DA51eAAB00e5812c54e370fB95D4C9c51F21
-PoolInfoUtils   0x6c5c7fD98415168ada1930d44447790959097482
-PositionManager 0x6548dF23A854f72335902e58a1e59B50bb3f11F1
-RewardsManager  0xdF7403003a16c49ebA5883bB5890d474794cea5a
-TokensFactory   0x9a56e5e70373E4965AAAFB994CB58eDC577031D7
-ERC20 factory   0x9617ABE221F9A9c492D5348be56aef4Db75A692d
-ERC721 factory  0x4f05DA51eAAB00e5812c54e370fB95D4C9c51F21
-PoolInfoUtils   0x6c5c7fD98415168ada1930d44447790959097482
-PositionManager 0x6548dF23A854f72335902e58a1e59B50bb3f11F1
-RewardsManager  0xdF7403003a16c49ebA5883bB5890d474794cea5a
-TokensFactory   0x9a56e5e70373E4965AAAFB994CB58eDC577031D7
+=== Local Testchain Addresses ===
+AJNA token      0x178b1E1fB424A374d0383aFB68d836ed3a9394E5
+GrantFund       0xC01c2D208ebaA1678F14818Db7A698F11cd0B6AB
+ERC20 factory   0xE135E89909717DA4fDe24143F509118ceA5fc3f7
+ERC721 factory  0x19156129c660883435Cad95100D025022443EDb2
+PoolInfoUtils   0x9a56e5e70373E4965AAAFB994CB58eDC577031D7
+PositionManager 0x73c8605EDE83C7CfB148e7190375350019043Ff7
+RewardsManager  0x3BA8d8EFD242ADD1e785A6a4be363B1E62039e9d
+TokensFactory   0x8e2dd77D0f1692E674D5ebC2005DfDB0D597B82F
 ```
 
 ### Create test tokens and pools ###
@@ -130,22 +122,22 @@ To facilitate testing, create some test tokens and pools.  Export `TOKENSFACTORY
 
 Output should look like this:
 ```
-Deployed TWETH to 0x844f3C269f301f89D81f29B91b8d8ED2C69Fa7Bc
-Deployed TDAI  to 0x4cEDCBb309d1646F3E91FB00c073bB28225262E6
-Deployed TWBTC to 0x983e8657Fb6450fca862a96BcAF461Ede2AaAE27
-Deployed TUSDC to 0x606A640CB77AeCBfefe918AebDCB34845FF18546
-Deployed TESTA to 0xf6C45B3B42b910110B1c750C959D0a396470c520
-Deployed TESTB to 0x3f2D7987bffe953f071273F3ABc99154ba3BAE99
-Deployed TESTC to 0x29eb88824f9F118B2aA975F6919D4a85189c9823
-Deployed TESTD to 0x1353F826e463782e084cf1f238662E40D32DD29d
+Deployed TWETH to 0x063385761bcFe1Ce5B7974988A1DB04C486F4a8c
+Deployed TDAI  to 0xc573D69D17b35AD7cC9862be8F01081C5C697dA0
+Deployed TWBTC to 0xc4057B441bD9D9C924118F8F96eDAac7ad88e873
+Deployed TUSDC to 0x61223F1164a9EC62cEe44027c325e32384b041FF
+Deployed TESTA to 0xf1889123c2664F31AfBd7582fdBC617ABfDc3D3c
+Deployed TESTB to 0xc7081A3BFEc18035f9bDA9b96c3b060b6782e8b4
+Deployed TESTC to 0xE8eA77785Dd1578967A3D48b030BA0Db0A12e2a5
+Deployed TESTD to 0xe10b6DDb35B383f7389Bbf4d3fDCDc832dDA21cc
 
-TESTA-TDAI pool deployed to 0x845e5B204859f61b1EE99D60A9ff440d972Cde1C
-TESTB-TDAI pool deployed to 0x46f65d2c707ea9c15D398889cEF64C0C373bFdA7
-TESTC-TDAI pool deployed to 0x066E979d2533443E14Bb17807c5a94c532c2E9ec
-TESTD-TDAI pool deployed to 0xe8dCc8FbAb00cF7911944dE5f9080Ecd9f25d3A9
-TWBTC-TDAI pool deployed to 0xa390765fB18EdCBC15dc9e2d56D9FC33c1a3FAcb
-TWETH-TUSDC pool deployed to 0x59e75F304a499cBa0FF2cd4eC7eee445B964F2B8
-TWBTC-TUSDC pool deployed to 0x5c6631E917f89882294F3edD18A067E47c9093cE
+TESTA-TDAI pool deployed to 0x7310aaa728372be5322b8394eee1f83dcb9ec2e2
+TESTB-TDAI pool deployed to 0x27bc4c6397ce069b2ff2f06731dc8098aa94ecc5
+TESTC-TDAI pool deployed to 0x5f379584f997221c1e27bf3ee224092814a9ab38
+TESTD-TDAI pool deployed to 0x2f6387dd3c7ef024c4ee71f156723ca64a438c42
+TWBTC-TDAI pool deployed to 0x792fdd5fe68dbba3ec1a4372645fb04ed486ff16
+TWETH-TUSDC pool deployed to 0xfda19b93c7b8add79d316c9fca5b7d9446a3026b
+TWBTC-TUSDC pool deployed to 0xe43179098e163968dd845e4d3818e1b9c40df2d4
 
 Provisioning tokens to 0xbC33716Bb8Dc2943C0dFFdE1F0A1d2D66F33515E
 Provisioning tokens to 0xD293C11Cd5025cd7B2218e74fd8D142A19833f74
@@ -169,14 +161,13 @@ Pool size: 25000
 
 Approving POOLA to spend borrower's tokens
 Borrower drawing debt
-Pool debt: 10009.615400485525712308
+Pool debt: 10009.615384615384620000
 
-Taking evm_snapshot of initial state
-"0x1"
+Latest block number: 181
+Latest block timestamp: 1687794045
 ```
 
-Ensure pool size and pool debt is appropriate.
-After execution, update the text above with new token and pool addresses.
+Ensure pool size and pool debt is appropriate. After execution, update the text above with new token and pool addresses. Convert addresses to ERC-55 checksum addresses where appropriate.
 
 
 ### Persist changes ###
@@ -211,9 +202,6 @@ Attach a shell to the bootnode:
 ```
 docker exec -it <image_name> /bin/sh
 ```
-
-## Usage ##
-To use the container, consumer must set `MAINNET_FORK_URL` in their environment.  This is a mainnet node used by ganache to maintain the fork.  It was renamed to avoid collision with consumer's `ETH_RPC_URL`, which would point to this ganache instance.
 
 ## Utility Scripts
 

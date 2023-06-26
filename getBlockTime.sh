@@ -26,6 +26,7 @@ if [ "$block_timestamp" == "null" ]; then
     echo "Latest block is pending and does not have a timestamp yet."
 else
     decimal_date=$(printf "%d" $block_timestamp)
+    # FIXME: this seems Mac-specific; on linux this tells you the time a file was last modified
     readable_date=$(date -r $block_timestamp)
 
     echo "Latest block number: $block_number_decimal"

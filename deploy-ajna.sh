@@ -11,17 +11,18 @@ export ETH_RPC_URL=http://0.0.0.0:8555
 export DEPLOY_ADDRESS=0xeeDC2EE00730314b7d7ddBf7d19e81FB7E5176CA
 export DEPLOY_RAWKEY=0xd332a346e8211513373b7ddcf94b2b513b934b901258a9465c76d0d9a2b676d8
 
+./getBlockTime.sh $ETH_RPC_URL
 echo Deploying AJNA to ${ETH_RPC_URL:?}
 
 # regular expressions to pluck addresses from deployment logs
-regex_ajna_token_address="AJNA token deployed to ([0-9xa-fA-F]+)"
-regex_grantfund_address="GrantFund deployed to ([0-9xa-fA-F]+)"
-regex_erc20_factory_address="ERC20\s+factory\s+([0-9xa-fA-F]+)"
-regex_erc721_factory_address="ERC721\s+factory\s+([0-9xa-fA-F]+)"
-regex_poolinfoutils_address="PoolInfoUtils\s+([0-9xa-fA-F]+)"
-regex_positionmanager_address="PositionManager\s+([0-9xa-fA-F]+)"
-regex_rewardsmanager_address="RewardsManager\s+([0-9xa-fA-F]+)"
-regex_tokensfactory_address="TokensFactory deployed to ([0-9xa-fA-F]+)"
+regex_ajna_token_address=".*AJNA[[:space:]]token[[:space:]]deployed[[:space:]]to[[:space:]]([0-9xa-fA-F]+)*."
+regex_grantfund_address=".*GrantFund[[:space:]]deployed[[:space:]]to[[:space:]]([0-9xa-fA-F]+)*."
+regex_erc20_factory_address=".*ERC20[[:space:]]+factory[[:space:]]+([0-9xa-fA-F]+)*."
+regex_erc721_factory_address=".*ERC721[[:space:]]+factory[[:space:]]+([0-9xa-fA-F]+)*."
+regex_poolinfoutils_address=".*PoolInfoUtils[[:space:]]+([0-9xa-fA-F]+)*."
+regex_positionmanager_address=".*PositionManager[[:space:]]+([0-9xa-fA-F]+)*."
+regex_rewardsmanager_address=".*RewardsManager[[:space:]]+([0-9xa-fA-F]+)*."
+regex_tokensfactory_address=".*TokensFactory[[:space:]]+deployed[[:space:]]+to[[:space:]]+([0-9xa-fA-F]+)*."
 
 # Test to ensure user cloned repositories into expected locations.
 pushd ../ecosystem-coordination && popd || fail

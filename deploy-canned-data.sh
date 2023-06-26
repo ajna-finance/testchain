@@ -106,6 +106,7 @@ echo Pool debt: $( cast --to-unit $(cast call $POOLA "debtInfo()(uint256,uint256
 echo
 
 # Take an EVM snapshot
+./getBlockTime.sh $ETH_RPC_URL
 echo Taking evm_snapshot of initial state
 cast rpc evm_snapshot
 echo
