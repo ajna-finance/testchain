@@ -20,7 +20,7 @@ function fail {
     exit 1
 }
 
-regex_token_address='logs\s+\[\{"address":"([0-9xa-fA-F]+)","topics":'
+regex_token_address='logs[[:space:]]+\[\{"address":"([0-9xa-fA-F]+)","topics":'
 
 if [[ -z ${TOKENSFACTORY} ]]; then fail "please set TOKENSFACTORY address"; fi
 
