@@ -102,6 +102,12 @@ PoolInfoUtils   0x6c5c7fD98415168ada1930d44447790959097482
 PositionManager 0x6548dF23A854f72335902e58a1e59B50bb3f11F1
 RewardsManager  0xdF7403003a16c49ebA5883bB5890d474794cea5a
 TokensFactory   0x9a56e5e70373E4965AAAFB994CB58eDC577031D7
+ERC20 factory   0x9617ABE221F9A9c492D5348be56aef4Db75A692d
+ERC721 factory  0x4f05DA51eAAB00e5812c54e370fB95D4C9c51F21
+PoolInfoUtils   0x6c5c7fD98415168ada1930d44447790959097482
+PositionManager 0x6548dF23A854f72335902e58a1e59B50bb3f11F1
+RewardsManager  0xdF7403003a16c49ebA5883bB5890d474794cea5a
+TokensFactory   0x9a56e5e70373E4965AAAFB994CB58eDC577031D7
 ```
 
 ### Create test tokens and pools ###
@@ -208,3 +214,25 @@ docker exec -it <image_name> /bin/sh
 
 ## Usage ##
 To use the container, consumer must set `MAINNET_FORK_URL` in their environment.  This is a mainnet node used by ganache to maintain the fork.  It was renamed to avoid collision with consumer's `ETH_RPC_URL`, which would point to this ganache instance.
+
+## Utility Scripts
+
+*GANACHE_URL is taken either from your computer's environment variable ETH_RPC_URL or from command input*
+  
+To jump in time with `evm_increaseTime`
+
+```
+./jump.sh NUMBER_OF_SECONDS GANACHE_URL
+```
+
+To reset to the initial snapshot. Be aware that Subgraph doesn't work well with Ganache and after reverting to snapshot, all Subgraph's data will remain.
+
+```
+./reset.sh GANACHE_URL
+```
+
+To check the latest block number and block time
+
+```
+./getBlockTime.sh GANACHE_URL
+```
