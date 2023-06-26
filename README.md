@@ -208,3 +208,25 @@ docker exec -it <image_name> /bin/sh
 
 ## Usage ##
 To use the container, consumer must set `MAINNET_FORK_URL` in their environment.  This is a mainnet node used by ganache to maintain the fork.  It was renamed to avoid collision with consumer's `ETH_RPC_URL`, which would point to this ganache instance.
+
+## Utility Scripts
+
+*GANACHE_URL is taken either from your computer's environment variable ETH_RPC_URL or from command input*
+  
+To jump in time with `evm_increaseTime`
+
+```
+./jump.sh NUMBER_OF_SECONDS GANACHE_URL
+```
+
+To reset to the initial snapshot. Be aware that Subgraph doesn't work well with Ganache and after reverting to snapshot, all Subgraph's data will remain.
+
+```
+./reset.sh GANACHE_URL
+```
+
+To check the latest block number and block time
+
+```
+./getBlockTime.sh GANACHE_URL
+```
