@@ -3,15 +3,12 @@ The purpose of this project is to set up a local testchain for testing Ajna depl
 
 ## Prerequisites ##
 * `docker` and `docker-compose`
-* a mainnet Ethereum node to create the fork
 * `foundry` tools (installation documented in `contracts` repository)
 * `bc` and `jq` tools
 
 ## Setup ##
 
-First, set `ETH_RPC_URL` to a mainnet node.  The docker container will use this to fork mainnet.
-
-Then, clone the following Ajna GitHub repositories.  Either check them out in the same location you cloned this `testchain` repository, or establish symlinks as needed.
+Clone the following Ajna GitHub repositories.  Either check them out in the same location you cloned this `testchain` repository, or establish symlinks as needed.
 - https://github.com/ajna-finance/contracts
 - https://github.com/ajna-finance/ecosystem-coordination
 - https://github.com/ajna-finance/tokens-factory
@@ -133,13 +130,13 @@ Deployed TESTB to 0x3f2D7987bffe953f071273F3ABc99154ba3BAE99
 Deployed TESTC to 0x29eb88824f9F118B2aA975F6919D4a85189c9823
 Deployed TESTD to 0x1353F826e463782e084cf1f238662E40D32DD29d
 
-TESTA-TDAI pool deployed to 0x845e5B204859f61b1EE99D60A9ff440d972Cde1C
-TESTB-TDAI pool deployed to 0x46f65d2c707ea9c15D398889cEF64C0C373bFdA7
-TESTC-TDAI pool deployed to 0x066E979d2533443E14Bb17807c5a94c532c2E9ec
-TESTD-TDAI pool deployed to 0xe8dCc8FbAb00cF7911944dE5f9080Ecd9f25d3A9
-TWBTC-TDAI pool deployed to 0xa390765fB18EdCBC15dc9e2d56D9FC33c1a3FAcb
-TWETH-TUSDC pool deployed to 0x59e75F304a499cBa0FF2cd4eC7eee445B964F2B8
-TWBTC-TUSDC pool deployed to 0x5c6631E917f89882294F3edD18A067E47c9093cE
+TESTA-TDAI pool deployed to 0x845e5b204859f61b1ee99d60a9ff440d972cde1c
+TESTB-TDAI pool deployed to 0x46f65d2c707ea9c15d398889cef64c0c373bfda7
+TESTC-TDAI pool deployed to 0x066e979d2533443e14bb17807c5a94c532c2e9ec
+TESTD-TDAI pool deployed to 0xe8dcc8fbab00cf7911944de5f9080ecd9f25d3a9
+TWBTC-TDAI pool deployed to 0xa390765fb18edcbc15dc9e2d56d9fc33c1a3facb
+TWETH-TUSDC pool deployed to 0x59e75f304a499cba0ff2cd4ec7eee445b964f2b8
+TWBTC-TUSDC pool deployed to 0x5c6631e917f89882294f3edd18a067e47c9093ce
 
 Provisioning tokens to 0xbC33716Bb8Dc2943C0dFFdE1F0A1d2D66F33515E
 Provisioning tokens to 0xD293C11Cd5025cd7B2218e74fd8D142A19833f74
@@ -163,14 +160,13 @@ Pool size: 25000
 
 Approving POOLA to spend borrower's tokens
 Borrower drawing debt
-Pool debt: 10009.615400485525712308
+Pool debt: 10009.615384615384620000
 
-Taking evm_snapshot of initial state
-"0x1"
+Latest block number: 175
+Latest block timestamp: 1687808927
 ```
 
-Ensure pool size and pool debt is appropriate.
-After execution, update the text above with new token and pool addresses.
+Ensure pool size and pool debt is appropriate. After execution, update the text above with new token and pool addresses. Convert addresses to ERC-55 checksum addresses where appropriate.
 
 
 ### Persist changes ###
@@ -205,9 +201,6 @@ Attach a shell to the bootnode:
 ```
 docker exec -it <image_name> /bin/sh
 ```
-
-## Usage ##
-To use the container, consumer must set `MAINNET_FORK_URL` in their environment.  This is a mainnet node used by ganache to maintain the fork.  It was renamed to avoid collision with consumer's `ETH_RPC_URL`, which would point to this ganache instance.
 
 ## Utility Scripts
 

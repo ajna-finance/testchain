@@ -26,7 +26,7 @@ if [ "$block_timestamp" == "null" ]; then
     echo "Latest block is pending and does not have a timestamp yet."
 else
     decimal_date=$(printf "%d" $block_timestamp)
-    readable_date=$(date -r $block_timestamp)
+    readable_date=$(perl -le 'print scalar localtime $ARGV[0]' $decimal_date)
 
     echo "Latest block number: $block_number_decimal"
     echo "Latest block timestamp: $decimal_date"

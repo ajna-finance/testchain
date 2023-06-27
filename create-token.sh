@@ -20,7 +20,7 @@ function fail {
     exit 1
 }
 
-regex_token_address='logs\s+\[\{"address":"([0-9xa-fA-F]+)","topics":'
+regex_token_address='logs[[:space:]]+\[\{"address":"([0-9xa-fA-F]+)","topics":'
 
 if [[ -z ${TOKENSFACTORY} ]]; then fail "please set TOKENSFACTORY address"; fi
 
@@ -40,6 +40,7 @@ fi
 output=$(cast send ${TOKEN} "mint(address,uint256)" ${mint_to} ${amount} \
     --from ${DEPLOY_ADDRESS} --private-key ${DEPLOY_RAWKEY})
 log "${output}"
+TOKEN=$(cast --to-checksum-address $TOKEN)
 
 if [[ $quiet == 0 ]]; then
     # tell the user what we just did
