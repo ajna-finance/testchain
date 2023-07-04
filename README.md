@@ -156,14 +156,14 @@ Provisioning tokens to 0x8596d963e0DEBCa873A56FbDd2C9d119Aa0eB443
 
 Approving POOLA to spend lender's tokens
 Lender adding liquidity
-Pool size: 0
+Pool size: 25000
 
 Approving POOLA to spend borrower's tokens
 Borrower drawing debt
-Pool debt: 0
+Pool debt: 10009.615384615384620000
 
 Latest block number: 175
-Latest block timestamp: 1688486077
+Latest block timestamp: 1688497443
 ```
 
 Ensure pool size and pool debt is appropriate. After execution, update the text above with new token and pool addresses. Convert addresses to ERC-55 checksum addresses where appropriate.
