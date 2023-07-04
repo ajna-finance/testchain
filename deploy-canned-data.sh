@@ -105,6 +105,9 @@ cast send $POOLA "drawDebt(address,uint256,uint256,uint256)" $BORROWER_ADDRESS $
 echo Pool debt: $( cast --to-unit $(cast call $POOLA "debtInfo()(uint256,uint256,uint256)" | head -1) ether )
 echo
 
+# start a new distribution period
+cast send ${GRANTFUND} "startNewDistributionPeriod()" --from $DEPLOY_ADDRESS --private-key $DEPLOY_RAWKEY > /dev/null
+
 # Take an EVM snapshot
 ./getBlockTime.sh $ETH_RPC_URL
 echo Taking evm_snapshot of initial state
