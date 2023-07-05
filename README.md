@@ -2,7 +2,7 @@
 The purpose of this project is to set up a local testchain for testing Ajna deployment and integration testing.
 
 ## Prerequisites ##
-* `docker` and `docker-compose`
+* `docker` and `compose` plugin (or `docker-compose` package)
 * `foundry` tools (installation documented in `contracts` repository)
 * `bc` and `jq` tools
 
@@ -20,7 +20,7 @@ Because `forge script` arguments conflict with _foundry_ configuration, comment 
 The included `docker-compose.yml` creates a single instance of `ganache` and uses a wallet seed for consistant account generation.
 
 ```
-docker-compose up
+docker compose up
 ```
 
 Here are the accounts and private keys available for seed 20070213:
@@ -93,17 +93,17 @@ Record addresses printed by the deployment script here:
 === Local Testchain Addresses ===
 AJNA token      0x25Af17eF4E2E6A4A2CE586C9D25dF87FD84D4a7d
 GrantFund       0xE340B87CEd1af1AbE1CE8D617c84B7f168e3b18b
-ERC20 factory   0x9617ABE221F9A9c492D5348be56aef4Db75A692d
-ERC721 factory  0x4f05DA51eAAB00e5812c54e370fB95D4C9c51F21
-PoolInfoUtils   0x6c5c7fD98415168ada1930d44447790959097482
-PositionManager 0x6548dF23A854f72335902e58a1e59B50bb3f11F1
-RewardsManager  0xdF7403003a16c49ebA5883bB5890d474794cea5a
-TokensFactory   0x9a56e5e70373E4965AAAFB994CB58eDC577031D7
+ERC20 factory   0xD86c4A8b172170Da0d5C0C1F12455bA80Eaa42AD
+ERC721 factory  0x9617ABE221F9A9c492D5348be56aef4Db75A692d
+PoolInfoUtils   0x4f05DA51eAAB00e5812c54e370fB95D4C9c51F21
+PositionManager 0x6c5c7fD98415168ada1930d44447790959097482
+RewardsManager  0x6548dF23A854f72335902e58a1e59B50bb3f11F1
+TokensFactory   0x19156129c660883435Cad95100D025022443EDb2
 ```
 
 ### Create test tokens and pools ###
 
-To facilitate testing, create some test tokens and pools.  Export `TOKENSFACTORY` and `ERC20FACTORY` to addresses from above, and then run `./deploy-canned-data.sh`.  This script will create several artifacts:
+To facilitate testing, create some test tokens and pools.  Export `TOKENSFACTORY`, `ERC20FACTORY`, and `GRANTFUND` to addresses from above, and then run `./deploy-canned-data.sh`.  This script will create several artifacts:
 * 8 test tokens: 4 mimicing popular tokens with appropriate decimal places, and 4 with no implied price.  All tokens get minted to address[0] from the list above.
 * 4 pools:
   * `TESTA-DAI` - Assume market price of TESTA is 100 DAI.  Lender 0xbC33716Bb8Dc2943C0dFFdE1F0A1d2D66F33515E adds liquidity to buckets as follows:
@@ -121,22 +121,22 @@ To facilitate testing, create some test tokens and pools.  Export `TOKENSFACTORY
 
 Output should look like this:
 ```
-Deployed TWETH to 0x844f3C269f301f89D81f29B91b8d8ED2C69Fa7Bc
-Deployed TDAI  to 0x4cEDCBb309d1646F3E91FB00c073bB28225262E6
-Deployed TWBTC to 0x983e8657Fb6450fca862a96BcAF461Ede2AaAE27
-Deployed TUSDC to 0x606A640CB77AeCBfefe918AebDCB34845FF18546
-Deployed TESTA to 0xf6C45B3B42b910110B1c750C959D0a396470c520
-Deployed TESTB to 0x3f2D7987bffe953f071273F3ABc99154ba3BAE99
-Deployed TESTC to 0x29eb88824f9F118B2aA975F6919D4a85189c9823
-Deployed TESTD to 0x1353F826e463782e084cf1f238662E40D32DD29d
+Deployed TWETH to 0xc17985054Cab9CEf76ec024820dAaaC50CE1ad85
+Deployed TDAI  to 0x53D10CAFE79953Bf334532e244ef0A80c3618199
+Deployed TWBTC to 0x91e7A64C3bE6977b1ea9b4ecBb1cC0e85073a9e6
+Deployed TUSDC to 0x72BB61e78fcB9dB3b5B3C8035BD9edAB5edd601E
+Deployed TESTA to 0x919ae2c42A69ebD939262F39b4dAdAFDBf9eB374
+Deployed TESTB to 0xfaEe9c3b7956Ee2088672FEd26200FAD7d85CB15
+Deployed TESTC to 0x674267c8A74fcAea8ccB1a196749B012e147005e
+Deployed TESTD to 0xf398f0bd39405C3029798C4CeFF4d5556592841F
 
-TESTA-TDAI pool deployed to 0x845e5b204859f61b1ee99d60a9ff440d972cde1c
-TESTB-TDAI pool deployed to 0x46f65d2c707ea9c15d398889cef64c0c373bfda7
-TESTC-TDAI pool deployed to 0x066e979d2533443e14bb17807c5a94c532c2e9ec
-TESTD-TDAI pool deployed to 0xe8dcc8fbab00cf7911944de5f9080ecd9f25d3a9
-TWBTC-TDAI pool deployed to 0xa390765fb18edcbc15dc9e2d56d9fc33c1a3facb
-TWETH-TUSDC pool deployed to 0x59e75f304a499cba0ff2cd4ec7eee445b964f2b8
-TWBTC-TUSDC pool deployed to 0x5c6631e917f89882294f3edd18a067e47c9093ce
+TESTA-TDAI pool deployed to 0x9b77d3c37fedb8d1d8cf5174708ed56163ad8fe4
+TESTB-TDAI pool deployed to 0x3578b4489fe9ee07fd1d62f767ddcdf2b99ea511
+TESTC-TDAI pool deployed to 0xc28d5d48ba711f464044bd983da7a89d8285a686
+TESTD-TDAI pool deployed to 0x4c6041dbf60cbc7b947e8837ecd44525da170ab0
+TWBTC-TDAI pool deployed to 0x5edfb7b2b57abee98e6f1b445f0dd328893b8951
+TWETH-TUSDC pool deployed to 0x0598390613de3208e320a8b272b6783832a918bd
+TWBTC-TUSDC pool deployed to 0x06a89f311d4559b9ba7c0d32939dfadcddc4bb7a
 
 Provisioning tokens to 0xbC33716Bb8Dc2943C0dFFdE1F0A1d2D66F33515E
 Provisioning tokens to 0xD293C11Cd5025cd7B2218e74fd8D142A19833f74
@@ -163,7 +163,7 @@ Borrower drawing debt
 Pool debt: 10009.615384615384620000
 
 Latest block number: 175
-Latest block timestamp: 1687808927
+Latest block timestamp: 1688497443
 ```
 
 Ensure pool size and pool debt is appropriate. After execution, update the text above with new token and pool addresses. Convert addresses to ERC-55 checksum addresses where appropriate.

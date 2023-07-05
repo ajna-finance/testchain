@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 
 # set up environment for the ganache container
 export ETH_RPC_URL=http://0.0.0.0:8555
@@ -37,7 +38,7 @@ else
 fi
 
 # mint to the specified address
-output=$(cast send ${TOKEN} "mint(address,uint256)" ${mint_to} ${amount} \
+output=$(cast send ${TOKEN:?} "mint(address,uint256)" ${mint_to} ${amount} \
     --from ${DEPLOY_ADDRESS} --private-key ${DEPLOY_RAWKEY})
 log "${output}"
 TOKEN=$(cast --to-checksum-address $TOKEN)

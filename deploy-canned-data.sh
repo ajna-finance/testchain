@@ -1,7 +1,9 @@
 #!/bin/bash
+set -e
 
 if [[ -z ${TOKENSFACTORY} ]]; then fail "please set TOKENSFACTORY address"; fi
 if [[ -z ${ERC20FACTORY} ]]; then fail "please set ERC20FACTORY address"; fi
+if [[ -z ${GRANTFUND} ]]; then fail "please set GRANTFUND address"; fi
 
 export ETH_RPC_URL=http://0.0.0.0:8555
 export DEPLOY_ADDRESS=0xeeDC2EE00730314b7d7ddBf7d19e81FB7E5176CA
@@ -67,7 +69,7 @@ eoas=(
 )
 for address in ${eoas[@]}; do
     echo Provisioning tokens to $address
-    cast send $TWETH "transfer(address,uint256)" $address 50ether --from $DEPLOY_ADDRESS --private-key $DEPLOY_RAWKEY > /dev/null
+    cast send ${TWETH:?} "transfer(address,uint256)" $address 50ether --from $DEPLOY_ADDRESS --private-key $DEPLOY_RAWKEY > /dev/null
     cast send $TDAI "transfer(address,uint256)" $address 200000ether --from $DEPLOY_ADDRESS --private-key $DEPLOY_RAWKEY > /dev/null
     cast send $TWBTC "transfer(address,uint256)" $address 400000000 --from $DEPLOY_ADDRESS --private-key $DEPLOY_RAWKEY > /dev/null    # 4 TWBTC
     cast send $TUSDC "transfer(address,uint256)" $address 300000000000 --from $DEPLOY_ADDRESS --private-key $DEPLOY_RAWKEY > /dev/null # 300_000 USDC
@@ -80,7 +82,7 @@ echo
 
 # Add liquidity
 echo Approving POOLA to spend lender\'s tokens
-cast send $TESTA "approve(address,uint256)" $POOLA 20ether --from $LENDER_ADDRESS --private-key $LENDER_KEY > /dev/null
+cast send ${TESTA:?} "approve(address,uint256)" ${POOLA:?} 20ether --from $LENDER_ADDRESS --private-key $LENDER_KEY > /dev/null
 cast send $TDAI "approve(address,uint256)" $POOLA 200000ether --from $LENDER_ADDRESS --private-key $LENDER_KEY > /dev/null
 echo Lender adding liquidity
 # TIMESTAMP=$(printf "%d" $(cast rpc eth_getBlockByNumber "latest" "false" | jq '.timestamp'))
@@ -88,9 +90,9 @@ TIMESTAMP=$(date -u +%s)
 EXPIRY=$(( $TIMESTAMP + 86400 ))
 cast send $POOLA "addCollateral(uint256,uint256,uint256)" 3.1ether 3220 $EXPIRY --from $LENDER_ADDRESS --private-key $LENDER_KEY > /dev/null
 # NOTE: explicit gas limit must be set for reliable addQuoteToken execution
-cast send $POOLA "addQuoteToken(uint256,uint256,uint256)" 8000ether 3236 $EXPIRY --from $LENDER_ADDRESS --private-key $LENDER_KEY --gas-limit 1000000 > /dev/null
-cast send $POOLA "addQuoteToken(uint256,uint256,uint256)" 12000ether 3242 $EXPIRY --from $LENDER_ADDRESS --private-key $LENDER_KEY --gas-limit 1000000 > /dev/null
-cast send $POOLA "addQuoteToken(uint256,uint256,uint256)" 5000ether 3261 $EXPIRY --from $LENDER_ADDRESS --private-key $LENDER_KEY --gas-limit 1000000 > /dev/null
+cast send $POOLA "addQuoteToken(uint256,uint256,uint256,bool)" 8000ether 3236 $EXPIRY false --from $LENDER_ADDRESS --private-key $LENDER_KEY --gas-limit 1000000 > /dev/null
+cast send $POOLA "addQuoteToken(uint256,uint256,uint256,bool)" 12000ether 3242 $EXPIRY false --from $LENDER_ADDRESS --private-key $LENDER_KEY --gas-limit 1000000 > /dev/null
+cast send $POOLA "addQuoteToken(uint256,uint256,uint256,bool)" 5000ether 3261 $EXPIRY false --from $LENDER_ADDRESS --private-key $LENDER_KEY --gas-limit 1000000 > /dev/null
 echo Pool size: $( cast --to-unit $( cast call $POOLA "depositSize()(uint256)" ) ether )
 echo
 
@@ -104,6 +106,9 @@ COLLATERAL=$(echo "$DEBT / $PRICE * $CR / 1" | bc)
 cast send $POOLA "drawDebt(address,uint256,uint256,uint256)" $BORROWER_ADDRESS ${DEBT}ether 3260 ${COLLATERAL}ether --from $BORROWER_ADDRESS --private-key $BORROWER_KEY --gas-limit 1000000 > /dev/null
 echo Pool debt: $( cast --to-unit $(cast call $POOLA "debtInfo()(uint256,uint256,uint256)" | head -1) ether )
 echo
+
+# start a new distribution period
+cast send ${GRANTFUND:?} "startNewDistributionPeriod()" --from $DEPLOY_ADDRESS --private-key $DEPLOY_RAWKEY > /dev/null
 
 # Take an EVM snapshot
 ./getBlockTime.sh $ETH_RPC_URL
