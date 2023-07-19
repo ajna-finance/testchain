@@ -1,6 +1,11 @@
 #!/bin/bash
 set -e
 
+function fail {
+    log "$1"
+    exit 1
+}
+
 if [[ -z ${TOKENSFACTORY} ]]; then fail "please set TOKENSFACTORY address"; fi
 if [[ -z ${ERC20FACTORY} ]]; then fail "please set ERC20FACTORY address"; fi
 if [[ -z ${GRANTFUND} ]]; then fail "please set GRANTFUND address"; fi
@@ -14,15 +19,18 @@ export BORROWER_ADDRESS=0xD293C11Cd5025cd7B2218e74fd8D142A19833f74
 export BORROWER_KEY=0x997f91a295440dc31eca817270e5de1817cf32fa99adc0890dc71f8667574391
 
 # Deploy tokens
-TWETH=$(./create-token.sh TestWrappedETH TWETH 18 $DEPLOY_ADDRESS 1000ether 1)
-TDAI=$(./create-token.sh TestDai TDAI 18 $DEPLOY_ADDRESS 500000ether 1)
-TWBTC=$(./create-token.sh TestWrappedBTC TWBTC 8 $DEPLOY_ADDRESS 25ether 1)
-TUSDC=$(./create-token.sh TestUSDC TUSDC 6 $DEPLOY_ADDRESS 500000ether 1)
-TESTA=$(./create-token.sh TestTokenA TESTA 18 $DEPLOY_ADDRESS 1000000ether 1)
-TESTB=$(./create-token.sh TestTokenB TESTB 18 $DEPLOY_ADDRESS 1000000ether 1)
-TESTC=$(./create-token.sh TestTokenC TESTC 18 $DEPLOY_ADDRESS 1000000ether 1)
-TESTD=$(./create-token.sh TestTokenD TESTD 18 $DEPLOY_ADDRESS 1000000ether 1)
-echo "Deployed TWETH to ${TWETH}"
+TWETH=$(./create-erc20-token.sh TestWrappedETH TWETH 18 $DEPLOY_ADDRESS 1000ether 1)
+TDAI=$(./create-erc20-token.sh TestDai TDAI 18 $DEPLOY_ADDRESS 500000ether 1)
+TWBTC=$(./create-erc20-token.sh TestWrappedBTC TWBTC 8 $DEPLOY_ADDRESS 25ether 1)
+TUSDC=$(./create-erc20-token.sh TestUSDC TUSDC 6 $DEPLOY_ADDRESS 500000ether 1)
+TESTA=$(./create-erc20-token.sh TestTokenA TESTA 18 $DEPLOY_ADDRESS 1000000ether 1)
+TESTB=$(./create-erc20-token.sh TestTokenB TESTB 18 $DEPLOY_ADDRESS 1000000ether 1)
+TESTC=$(./create-erc20-token.sh TestTokenC TESTC 18 $DEPLOY_ADDRESS 1000000ether 1)
+TESTD=$(./create-erc20-token.sh TestTokenD TESTD 18 $DEPLOY_ADDRESS 1000000ether 1)
+TDUCK=$(./create-nft.sh TestDuckies TDUCK 1 )
+TGOOSE=$(./create-nft.sh TestGeese TGOOSE 1 )
+TLOON=$(./create-nft.sh TestLoon TLOON 1 )
+echo "Deployed TWETH to ${TWETH:?}"
 echo "Deployed TDAI  to ${TDAI}"
 echo "Deployed TWBTC to ${TWBTC}"
 echo "Deployed TUSDC to ${TUSDC}"
@@ -30,9 +38,12 @@ echo "Deployed TESTA to ${TESTA}"
 echo "Deployed TESTB to ${TESTB}"
 echo "Deployed TESTC to ${TESTC}"
 echo "Deployed TESTD to ${TESTD}"
+echo "Deployed TDUCK to ${TDUCK:?}"
+echo "Deployed TGOOSE to ${TGOOSE}"
+echo "Deployed TLOON to ${TLOON}"
 echo
 
-# Deploy pool
+# Deploy pools
 POOLA=$(./create-erc20-pool.sh $TESTA $TDAI 1)
 POOLB=$(./create-erc20-pool.sh $TESTB $TDAI 1)
 POOLC=$(./create-erc20-pool.sh $TESTC $TDAI 1)
@@ -67,8 +78,9 @@ eoas=(
     "0x81fFF6A381bF1aC11ed388124186C177Eb8623f4"
     "0x8596d963e0DEBCa873A56FbDd2C9d119Aa0eB443"
 )
+tokenId=20 # first 20 tokens are implicitly minted to the deploy address
 for address in ${eoas[@]}; do
-    echo Provisioning tokens to $address
+    echo Provisioning tokens            to $address
     cast send ${TWETH:?} "transfer(address,uint256)" $address 50ether --from $DEPLOY_ADDRESS --private-key $DEPLOY_RAWKEY > /dev/null
     cast send $TDAI "transfer(address,uint256)" $address 200000ether --from $DEPLOY_ADDRESS --private-key $DEPLOY_RAWKEY > /dev/null
     cast send $TWBTC "transfer(address,uint256)" $address 400000000 --from $DEPLOY_ADDRESS --private-key $DEPLOY_RAWKEY > /dev/null    # 4 TWBTC
@@ -77,6 +89,11 @@ for address in ${eoas[@]}; do
     cast send $TESTB "transfer(address,uint256)" $address 12000ether --from $DEPLOY_ADDRESS --private-key $DEPLOY_RAWKEY > /dev/null
     cast send $TESTC "transfer(address,uint256)" $address 13000ether --from $DEPLOY_ADDRESS --private-key $DEPLOY_RAWKEY > /dev/null
     cast send $TESTD "transfer(address,uint256)" $address 14000ether --from $DEPLOY_ADDRESS --private-key $DEPLOY_RAWKEY > /dev/null
+    ((tokenId++))
+    echo Provisioning NFTs with tokenId $tokenId to $address
+    cast send $TDUCK "mint(address,uint256)" $address $tokenId --from $DEPLOY_ADDRESS --private-key $DEPLOY_RAWKEY > /dev/null
+    cast send $TGOOSE "mint(address,uint256)" $address $tokenId --from $DEPLOY_ADDRESS --private-key $DEPLOY_RAWKEY > /dev/null
+    cast send $TLOON "mint(address,uint256)" $address $tokenId --from $DEPLOY_ADDRESS --private-key $DEPLOY_RAWKEY > /dev/null
 done
 echo
 
