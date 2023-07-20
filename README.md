@@ -103,10 +103,11 @@ TokensFactory   0x19156129c660883435Cad95100D025022443EDb2
 
 ### Create test tokens and pools ###
 
-To facilitate testing, create some test tokens and pools.  Export `TOKENSFACTORY`, `ERC20FACTORY`, and `GRANTFUND` to addresses from above, and then run `./deploy-canned-data.sh`.  This script will create several artifacts:
-* 8 test tokens: 4 mimicing popular tokens with appropriate decimal places, and 4 with no implied price.  All tokens get minted to address[0] from the list above.
-* 4 pools:
-  * `TESTA-DAI` - Assume market price of TESTA is 100 DAI.  Lender 0xbC33716Bb8Dc2943C0dFFdE1F0A1d2D66F33515E adds liquidity to buckets as follows:
+To facilitate testing, create some test tokens and pools.  Export `TOKENSFACTORY`, `ERC20FACTORY`, `ERC721FACTORY` and `GRANTFUND` to addresses from above, and then run `./deploy-canned-data.sh`.  This script will create several artifacts:
+* 8 ERC-20 test tokens: 4 mimicing popular tokens with appropriate decimal places, and 4 with no implied price.  All tokens get minted to address[0] from the list above.
+* 3 ERC-721 NFTs: the first 20 tokens are minted to the deployer, each user gets a subsequent tokenId for all three.
+* 7 fungible pools:
+  * `TESTA-TDAI` - Assume market price of TESTA is 100 DAI.  Lender 0xbC33716Bb8Dc2943C0dFFdE1F0A1d2D66F33515E adds liquidity to buckets as follows:
     | index | price   | deposit | collateral |
     |-------|--------:|--------:|-----------:|
     | 3220  | 106.520 | 0       | 3.1        |
@@ -115,9 +116,19 @@ To facilitate testing, create some test tokens and pools.  Export `TOKENSFACTORY
     | 3261  |  86.821 | 5000    | 0          |
 
     Borrower 0xD293C11Cd5025cd7B2218e74fd8D142A19833f74 draws 10k debt, bringing LUP index to 3242.
-  * `TESTB-DAI` - empty pool
-  * `TESTC-DAI` - empty pool
-  * `TESTD-DAI` - empty pool
+  * `TESTB-TDAI`, `TESTC-TDAI`, `TESTD-TDAI` - empty 18-decimal pools
+  * `TWBTC-TDAI` - empty 12/18-decimal pool
+  * `TWETH-TUSDC` - empty 18/8-decimal pool
+  * `TWBTC-TUSDC` - empty 12/8-decimal pool
+* 3 nonfungible pools:
+  * `TDUCK-TDAI` - Collection pool.  Assume floor price of TDUCK is 500 DAI.  Lender 0xbC33716Bb8Dc2943C0dFFdE1F0A1d2D66F33515E adds liquidity to buckets as follows:
+    | index | price   | deposit | collateral |
+    |-------|--------:|--------:|-----------:|
+    | 2909  | 502.434 | 6000    | 0          |
+    | 2920  | 475.611 | 4000    | 0          |
+
+  * `TGOOSE-TDAI` - Empty subset pool accepting odd-numbered tokenIds 15-33.
+  * `TLOON-TDAI` - Empty subset pool accepting even-numbered tokenIds 16-34.
 
 Output should look like this:
 ```

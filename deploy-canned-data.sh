@@ -2,13 +2,15 @@
 set -e
 
 function fail {
-    log "$1"
+    echo "$1"
     exit 1
 }
 
 if [[ -z ${TOKENSFACTORY} ]]; then fail "please set TOKENSFACTORY address"; fi
 if [[ -z ${ERC20FACTORY} ]]; then fail "please set ERC20FACTORY address"; fi
+if [[ -z ${ERC721FACTORY} ]]; then fail "please set ERC721FACTORY address"; fi
 if [[ -z ${GRANTFUND} ]]; then fail "please set GRANTFUND address"; fi
+
 
 export ETH_RPC_URL=http://0.0.0.0:8555
 export DEPLOY_ADDRESS=0xeeDC2EE00730314b7d7ddBf7d19e81FB7E5176CA
@@ -27,9 +29,6 @@ TESTA=$(./create-erc20-token.sh TestTokenA TESTA 18 $DEPLOY_ADDRESS 1000000ether
 TESTB=$(./create-erc20-token.sh TestTokenB TESTB 18 $DEPLOY_ADDRESS 1000000ether 1)
 TESTC=$(./create-erc20-token.sh TestTokenC TESTC 18 $DEPLOY_ADDRESS 1000000ether 1)
 TESTD=$(./create-erc20-token.sh TestTokenD TESTD 18 $DEPLOY_ADDRESS 1000000ether 1)
-TDUCK=$(./create-nft.sh TestDuckies TDUCK 1 )
-TGOOSE=$(./create-nft.sh TestGeese TGOOSE 1 )
-TLOON=$(./create-nft.sh TestLoon TLOON 1 )
 echo "Deployed TWETH to ${TWETH:?}"
 echo "Deployed TDAI  to ${TDAI}"
 echo "Deployed TWBTC to ${TWBTC}"
@@ -38,6 +37,9 @@ echo "Deployed TESTA to ${TESTA}"
 echo "Deployed TESTB to ${TESTB}"
 echo "Deployed TESTC to ${TESTC}"
 echo "Deployed TESTD to ${TESTD}"
+TDUCK=$(./create-nft.sh TestDuckies TDUCK 1 )
+TGOOSE=$(./create-nft.sh TestGeese TGOOSE 1 )
+TLOON=$(./create-nft.sh TestLoon TLOON 1 )
 echo "Deployed TDUCK to ${TDUCK:?}"
 echo "Deployed TGOOSE to ${TGOOSE}"
 echo "Deployed TLOON to ${TLOON}"
@@ -58,6 +60,12 @@ echo TESTD-TDAI pool deployed to $POOLD
 echo TWBTC-TDAI pool deployed to $POOLWBTCDAI
 echo TWETH-TUSDC pool deployed to $POOLWETHUSDC
 echo TWBTC-TUSDC pool deployed to $POOLWBTCUSDC
+POOLDUCK=$(./create-nft-pool.sh $TDUCK $TDAI "" 1)
+POOLGOOSE=$(./create-nft-pool.sh $TGOOSE $TDAI "15,17,19,21,23,25,27,29,31,33" 1)
+POOLLOON=$(./create-nft-pool.sh $TLOON $TDAI "16,18,20,22,24,26,28,30,32,34" 1)
+echo TDUCK-TDAI pool deployed to $POOLDUCK
+echo TGOOSE-TDAI pool deployed to $POOLGOOSE
+echo TLOON-TDAI pool deployed to $POOLLOON
 echo
 
 # Provision tokens to actors
@@ -80,7 +88,7 @@ eoas=(
 )
 tokenId=20 # first 20 tokens are implicitly minted to the deploy address
 for address in ${eoas[@]}; do
-    echo Provisioning tokens            to $address
+    echo "Provisioning tokens               to $address"
     cast send ${TWETH:?} "transfer(address,uint256)" $address 50ether --from $DEPLOY_ADDRESS --private-key $DEPLOY_RAWKEY > /dev/null
     cast send $TDAI "transfer(address,uint256)" $address 200000ether --from $DEPLOY_ADDRESS --private-key $DEPLOY_RAWKEY > /dev/null
     cast send $TWBTC "transfer(address,uint256)" $address 400000000 --from $DEPLOY_ADDRESS --private-key $DEPLOY_RAWKEY > /dev/null    # 4 TWBTC
@@ -89,18 +97,18 @@ for address in ${eoas[@]}; do
     cast send $TESTB "transfer(address,uint256)" $address 12000ether --from $DEPLOY_ADDRESS --private-key $DEPLOY_RAWKEY > /dev/null
     cast send $TESTC "transfer(address,uint256)" $address 13000ether --from $DEPLOY_ADDRESS --private-key $DEPLOY_RAWKEY > /dev/null
     cast send $TESTD "transfer(address,uint256)" $address 14000ether --from $DEPLOY_ADDRESS --private-key $DEPLOY_RAWKEY > /dev/null
-    ((tokenId++))
-    echo Provisioning NFTs with tokenId $tokenId to $address
+    echo "Provisioning NFTs with tokenId $tokenId to $address"
     cast send $TDUCK "mint(address,uint256)" $address $tokenId --from $DEPLOY_ADDRESS --private-key $DEPLOY_RAWKEY > /dev/null
     cast send $TGOOSE "mint(address,uint256)" $address $tokenId --from $DEPLOY_ADDRESS --private-key $DEPLOY_RAWKEY > /dev/null
     cast send $TLOON "mint(address,uint256)" $address $tokenId --from $DEPLOY_ADDRESS --private-key $DEPLOY_RAWKEY > /dev/null
+    ((tokenId++))
 done
 echo
 
-# Add liquidity
+# Add liquidity to fungible pool
 echo Approving POOLA to spend lender\'s tokens
-cast send ${TESTA:?} "approve(address,uint256)" ${POOLA:?} 20ether --from $LENDER_ADDRESS --private-key $LENDER_KEY > /dev/null
-cast send $TDAI "approve(address,uint256)" $POOLA 200000ether --from $LENDER_ADDRESS --private-key $LENDER_KEY > /dev/null
+cast send ${TESTA:?} "approve(address,uint256)" ${POOLA:?} 20ether --from $LENDER_ADDRESS --private-key $LENDER_KEY > /dev/null || fail "failed to approve TESTA"
+cast send $TDAI "approve(address,uint256)" $POOLA 200000ether --from $LENDER_ADDRESS --private-key $LENDER_KEY > /dev/null || fail "failed to approve TDAI"
 echo Lender adding liquidity
 # TIMESTAMP=$(printf "%d" $(cast rpc eth_getBlockByNumber "latest" "false" | jq '.timestamp'))
 TIMESTAMP=$(date -u +%s)
@@ -113,7 +121,7 @@ cast send $POOLA "addQuoteToken(uint256,uint256,uint256,bool)" 5000ether 3261 $E
 echo Pool size: $( cast --to-unit $( cast call $POOLA "depositSize()(uint256)" ) ether )
 echo
 
-# Draw debt
+# Draw debt from fungible pool
 echo Approving POOLA to spend borrower\'s tokens
 cast send $TESTA "approve(address,uint256)" $POOLA 4000ether --from $BORROWER_ADDRESS --private-key $BORROWER_KEY > /dev/null
 cast send $TDAI "approve(address,uint256)" $POOLA 10300ether --from $BORROWER_ADDRESS --private-key $BORROWER_KEY > /dev/null
@@ -123,6 +131,15 @@ COLLATERAL=$(echo "$DEBT / $PRICE * $CR / 1" | bc)
 cast send $POOLA "drawDebt(address,uint256,uint256,uint256)" $BORROWER_ADDRESS ${DEBT}ether 3260 ${COLLATERAL}ether --from $BORROWER_ADDRESS --private-key $BORROWER_KEY --gas-limit 1000000 > /dev/null
 echo Pool debt: $( cast --to-unit $(cast call $POOLA "debtInfo()(uint256,uint256,uint256)" | head -1) ether )
 echo
+
+# Add liquidity to nonfungible pool
+cast send $POOLDUCK "addQuoteToken(uint256,uint256,uint256)" 6000ether 2909 $EXPIRY --from $LENDER_ADDRESS --private-key $LENDER_KEY --gas-limit 1000000 > /dev/null
+cast send $POOLDUCK "addQuoteToken(uint256,uint256,uint256)" 4000ether 2920 $EXPIRY --from $LENDER_ADDRESS --private-key $LENDER_KEY --gas-limit 1000000 > /dev/null
+echo Pool size: $( cast --to-unit $( cast call $POOLA "depositSize()(uint256)" ) ether )
+echo
+
+# Draw debt from fungible pool
+
 
 # start a new distribution period
 cast send ${GRANTFUND:?} "startNewDistributionPeriod()" --from $DEPLOY_ADDRESS --private-key $DEPLOY_RAWKEY > /dev/null
