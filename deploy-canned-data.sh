@@ -107,9 +107,9 @@ echo
 
 # Add liquidity to fungible pool
 echo Approving POOLA to spend lender\'s tokens
-cast send ${TESTA:?} "approve(address,uint256)" ${POOLA:?} 20ether --from $LENDER_ADDRESS --private-key $LENDER_KEY > /dev/null || fail "failed to approve TESTA"
-cast send $TDAI "approve(address,uint256)" $POOLA 200000ether --from $LENDER_ADDRESS --private-key $LENDER_KEY > /dev/null || fail "failed to approve TDAI"
-echo Lender adding liquidity
+cast send ${TESTA:?} "approve(address,uint256)" ${POOLA:?} 20ether --from $LENDER_ADDRESS --private-key $LENDER_KEY > /dev/null
+cast send $TDAI "approve(address,uint256)" $POOLA 100000ether --from $LENDER_ADDRESS --private-key $LENDER_KEY > /dev/null
+echo Lender adding liquidity to POOLA
 # TIMESTAMP=$(printf "%d" $(cast rpc eth_getBlockByNumber "latest" "false" | jq '.timestamp'))
 TIMESTAMP=$(date -u +%s)
 EXPIRY=$(( $TIMESTAMP + 86400 ))
@@ -119,13 +119,12 @@ cast send $POOLA "addQuoteToken(uint256,uint256,uint256,bool)" 8000ether 3236 $E
 cast send $POOLA "addQuoteToken(uint256,uint256,uint256,bool)" 12000ether 3242 $EXPIRY false --from $LENDER_ADDRESS --private-key $LENDER_KEY --gas-limit 1000000 > /dev/null
 cast send $POOLA "addQuoteToken(uint256,uint256,uint256,bool)" 5000ether 3261 $EXPIRY false --from $LENDER_ADDRESS --private-key $LENDER_KEY --gas-limit 1000000 > /dev/null
 echo Pool size: $( cast --to-unit $( cast call $POOLA "depositSize()(uint256)" ) ether )
-echo
 
 # Draw debt from fungible pool
 echo Approving POOLA to spend borrower\'s tokens
 cast send $TESTA "approve(address,uint256)" $POOLA 4000ether --from $BORROWER_ADDRESS --private-key $BORROWER_KEY > /dev/null
 cast send $TDAI "approve(address,uint256)" $POOLA 10300ether --from $BORROWER_ADDRESS --private-key $BORROWER_KEY > /dev/null
-echo Borrower drawing debt
+echo Borrower drawing debt from POOLA
 DEBT=10000; PRICE=100; CR=1.3
 COLLATERAL=$(echo "$DEBT / $PRICE * $CR / 1" | bc)
 cast send $POOLA "drawDebt(address,uint256,uint256,uint256)" $BORROWER_ADDRESS ${DEBT}ether 3260 ${COLLATERAL}ether --from $BORROWER_ADDRESS --private-key $BORROWER_KEY --gas-limit 1000000 > /dev/null
@@ -133,13 +132,20 @@ echo Pool debt: $( cast --to-unit $(cast call $POOLA "debtInfo()(uint256,uint256
 echo
 
 # Add liquidity to nonfungible pool
-cast send $POOLDUCK "addQuoteToken(uint256,uint256,uint256)" 6000ether 2909 $EXPIRY --from $LENDER_ADDRESS --private-key $LENDER_KEY --gas-limit 1000000 > /dev/null
-cast send $POOLDUCK "addQuoteToken(uint256,uint256,uint256)" 4000ether 2920 $EXPIRY --from $LENDER_ADDRESS --private-key $LENDER_KEY --gas-limit 1000000 > /dev/null
-echo Pool size: $( cast --to-unit $( cast call $POOLA "depositSize()(uint256)" ) ether )
+echo Approving POOLDUCK to spend lender\'s TDAI
+cast send $TDAI "approve(address,uint256)" $POOLDUCK 100000ether --from $LENDER_ADDRESS --private-key $LENDER_KEY > /dev/null
+echo Lender adding liquidity to POOLDUCK
+cast send $POOLDUCK "addQuoteToken(uint256,uint256,uint256,bool)" 6000ether 2909 $EXPIRY false --from $LENDER_ADDRESS --private-key $LENDER_KEY --gas-limit 1000000 > /dev/null
+cast send $POOLDUCK "addQuoteToken(uint256,uint256,uint256,bool)" 4000ether 2920 $EXPIRY false --from $LENDER_ADDRESS --private-key $LENDER_KEY --gas-limit 1000000 > /dev/null
+echo Pool size: $( cast --to-unit $( cast call $POOLDUCK "depositSize()(uint256)" ) ether )
+
+# Draw debt from nonfungible pool
+echo Approving POOLDUCK to spend borrower\'s NFT
+cast send $TDUCK "setApprovalForAll(address,bool)" $POOLDUCK true --from $BORROWER_ADDRESS --private-key $BORROWER_KEY > /dev/null
+echo Borrower drawing debt from POOLDUCK
+cast send $POOLDUCK "drawDebt(address,uint256,uint256,uint256[])" $BORROWER_ADDRESS 435ether 7388 [21] --from $BORROWER_ADDRESS --private-key $BORROWER_KEY --gas-limit 1000000 > /dev/null
+echo Pool debt: $( cast --to-unit $(cast call $POOLDUCK "debtInfo()(uint256,uint256,uint256)" | head -1) ether )
 echo
-
-# Draw debt from fungible pool
-
 
 # start a new distribution period
 cast send ${GRANTFUND:?} "startNewDistributionPeriod()" --from $DEPLOY_ADDRESS --private-key $DEPLOY_RAWKEY > /dev/null
