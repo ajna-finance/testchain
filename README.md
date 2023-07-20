@@ -140,41 +140,71 @@ Deployed TESTA to 0x919ae2c42A69ebD939262F39b4dAdAFDBf9eB374
 Deployed TESTB to 0xfaEe9c3b7956Ee2088672FEd26200FAD7d85CB15
 Deployed TESTC to 0x674267c8A74fcAea8ccB1a196749B012e147005e
 Deployed TESTD to 0xf398f0bd39405C3029798C4CeFF4d5556592841F
+Deployed TDUCK to 0x1fb7972C722716F39DADF20967c6345dA223D943
+Deployed TGOOSE to 0xcc0ec11ED0B23bF63C00A5E138E1529598331d75
+Deployed TLOON to 0x11F89DFC6eBA8aDb5Dcef011B21EeD345bfC1B58
 
-TESTA-TDAI pool deployed to 0x9b77d3c37fedb8d1d8cf5174708ed56163ad8fe4
-TESTB-TDAI pool deployed to 0x3578b4489fe9ee07fd1d62f767ddcdf2b99ea511
-TESTC-TDAI pool deployed to 0xc28d5d48ba711f464044bd983da7a89d8285a686
-TESTD-TDAI pool deployed to 0x4c6041dbf60cbc7b947e8837ecd44525da170ab0
-TWBTC-TDAI pool deployed to 0x5edfb7b2b57abee98e6f1b445f0dd328893b8951
-TWETH-TUSDC pool deployed to 0x0598390613de3208e320a8b272b6783832a918bd
-TWBTC-TUSDC pool deployed to 0x06a89f311d4559b9ba7c0d32939dfadcddc4bb7a
+TESTA-TDAI pool deployed to 0x9b77d3C37FeDb8d1D8CF5174708Ed56163AD8FE4
+TESTB-TDAI pool deployed to 0x3578B4489FE9EE07FD1D62F767DdCDf2B99Ea511
+TESTC-TDAI pool deployed to 0xC28D5d48bA711F464044Bd983DA7A89d8285a686
+TESTD-TDAI pool deployed to 0x4c6041dbF60cBc7b947E8837EcD44525dA170aB0
+TWBTC-TDAI pool deployed to 0x5EdFB7B2b57abee98e6F1B445F0dd328893B8951
+TWETH-TUSDC pool deployed to 0x0598390613DE3208e320A8b272b6783832A918BD
+TWBTC-TUSDC pool deployed to 0x06A89f311d4559b9Ba7c0d32939dFADcDDC4Bb7A
+TDUCK-TDAI pool deployed to 0x845e5B204859f61b1EE99D60A9ff440d972Cde1C
+TGOOSE-TDAI pool deployed to 0x46f65d2c707ea9c15D398889cEF64C0C373bFdA7
+TLOON-TDAI pool deployed to 0x066E979d2533443E14Bb17807c5a94c532c2E9ec
 
-Provisioning tokens to 0xbC33716Bb8Dc2943C0dFFdE1F0A1d2D66F33515E
-Provisioning tokens to 0xD293C11Cd5025cd7B2218e74fd8D142A19833f74
-Provisioning tokens to 0xb240043d57f11a0253743566C413bB8B068cb1F2
-Provisioning tokens to 0x6f386a7a0EF33b7927bBF86bf06414884a3FDFE5
-Provisioning tokens to 0x122230509E5bEEd0ea3c20f50CC87e0CdB9d7e1b
-Provisioning tokens to 0xB932C1F1C422D39310d0cb6bE57be36D356fc0c8
-Provisioning tokens to 0x9A7212047c046a28E699fd8737F2b0eF0F94B422
-Provisioning tokens to 0x7CA0e91795AD447De38E4ab03b8f1A829F38cA58
-Provisioning tokens to 0xd21BB9dEF715C0E7A1b7F18496F2475bcDeFA1Be
-Provisioning tokens to 0xef62E4A54bE04918f435b7dF83c01138521C009b
-Provisioning tokens to 0xAecE01e5Ba6B171455B97FBA91b33E1b138AF60c
-Provisioning tokens to 0x9D3904CD72d3BDb97C3B2e266A60aBe127B6F940
-Provisioning tokens to 0x2636aD85Da87Ff3780e1eC5e48fC0aBa33849B16
-Provisioning tokens to 0x81fFF6A381bF1aC11ed388124186C177Eb8623f4
-Provisioning tokens to 0x8596d963e0DEBCa873A56FbDd2C9d119Aa0eB443
+Provisioning tokens               to 0xbC33716Bb8Dc2943C0dFFdE1F0A1d2D66F33515E
+Provisioning NFTs with tokenId 20 to 0xbC33716Bb8Dc2943C0dFFdE1F0A1d2D66F33515E
+Provisioning tokens               to 0xD293C11Cd5025cd7B2218e74fd8D142A19833f74
+Provisioning NFTs with tokenId 21 to 0xD293C11Cd5025cd7B2218e74fd8D142A19833f74
+Provisioning tokens               to 0xb240043d57f11a0253743566C413bB8B068cb1F2
+Provisioning NFTs with tokenId 22 to 0xb240043d57f11a0253743566C413bB8B068cb1F2
+Provisioning tokens               to 0x6f386a7a0EF33b7927bBF86bf06414884a3FDFE5
+Provisioning NFTs with tokenId 23 to 0x6f386a7a0EF33b7927bBF86bf06414884a3FDFE5
+Provisioning tokens               to 0x122230509E5bEEd0ea3c20f50CC87e0CdB9d7e1b
+Provisioning NFTs with tokenId 24 to 0x122230509E5bEEd0ea3c20f50CC87e0CdB9d7e1b
+Provisioning tokens               to 0xB932C1F1C422D39310d0cb6bE57be36D356fc0c8
+Provisioning NFTs with tokenId 25 to 0xB932C1F1C422D39310d0cb6bE57be36D356fc0c8
+Provisioning tokens               to 0x9A7212047c046a28E699fd8737F2b0eF0F94B422
+Provisioning NFTs with tokenId 26 to 0x9A7212047c046a28E699fd8737F2b0eF0F94B422
+Provisioning tokens               to 0x7CA0e91795AD447De38E4ab03b8f1A829F38cA58
+Provisioning NFTs with tokenId 27 to 0x7CA0e91795AD447De38E4ab03b8f1A829F38cA58
+Provisioning tokens               to 0xd21BB9dEF715C0E7A1b7F18496F2475bcDeFA1Be
+Provisioning NFTs with tokenId 28 to 0xd21BB9dEF715C0E7A1b7F18496F2475bcDeFA1Be
+Provisioning tokens               to 0xef62E4A54bE04918f435b7dF83c01138521C009b
+Provisioning NFTs with tokenId 29 to 0xef62E4A54bE04918f435b7dF83c01138521C009b
+Provisioning tokens               to 0xAecE01e5Ba6B171455B97FBA91b33E1b138AF60c
+Provisioning NFTs with tokenId 30 to 0xAecE01e5Ba6B171455B97FBA91b33E1b138AF60c
+Provisioning tokens               to 0x9D3904CD72d3BDb97C3B2e266A60aBe127B6F940
+Provisioning NFTs with tokenId 31 to 0x9D3904CD72d3BDb97C3B2e266A60aBe127B6F940
+Provisioning tokens               to 0x2636aD85Da87Ff3780e1eC5e48fC0aBa33849B16
+Provisioning NFTs with tokenId 32 to 0x2636aD85Da87Ff3780e1eC5e48fC0aBa33849B16
+Provisioning tokens               to 0x81fFF6A381bF1aC11ed388124186C177Eb8623f4
+Provisioning NFTs with tokenId 33 to 0x81fFF6A381bF1aC11ed388124186C177Eb8623f4
+Provisioning tokens               to 0x8596d963e0DEBCa873A56FbDd2C9d119Aa0eB443
+Provisioning NFTs with tokenId 34 to 0x8596d963e0DEBCa873A56FbDd2C9d119Aa0eB443
 
 Approving POOLA to spend lender's tokens
-Lender adding liquidity
+Lender adding liquidity to POOLA
 Pool size: 25000
-
 Approving POOLA to spend borrower's tokens
-Borrower drawing debt
+Borrower drawing debt from POOLA
 Pool debt: 10009.615384615384620000
 
-Latest block number: 175
-Latest block timestamp: 1688497443
+Approving POOLDUCK to spend lender's TDAI
+Lender adding liquidity to POOLDUCK
+Pool size: 10000
+Approving POOLDUCK to spend borrower's NFT
+Borrower drawing debt from POOLDUCK
+Pool debt: 435.418269230769230970
+
+Latest block number: 231
+Latest block timestamp: 1689826191
+Latest block date: Thu Jul 20 00:09:51 2023
+Taking evm_snapshot of initial state
+"0x1"
 ```
 
 Ensure pool size and pool debt is appropriate. After execution, update the text above with new token and pool addresses. Convert addresses to ERC-55 checksum addresses where appropriate.
