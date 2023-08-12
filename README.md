@@ -84,8 +84,9 @@ If you already deployed Ajna to the endpoint, it should return a slightly smalle
 
 ### Deploy Ajna to the testnet ###
 
+Source the deployment script, such that environment is updated with new deployment addresses.
 ```
-./deploy-ajna.sh
+source ./deploy-ajna.sh
 ```
 
 Record addresses printed by the deployment script here:
@@ -103,7 +104,7 @@ TokensFactory   0x19156129c660883435Cad95100D025022443EDb2
 
 ### Create test tokens and pools ###
 
-To facilitate testing, create some test tokens and pools.  Export `TOKENSFACTORY`, `ERC20FACTORY`, `ERC721FACTORY` and `GRANTFUND` to addresses from above, and then run `./deploy-canned-data.sh`.  This script will create several artifacts:
+To facilitate testing, create some test tokens and pools by running `./deploy-canned-data.sh`.  This script will create several artifacts:
 * 8 ERC-20 test tokens: 4 mimicing popular tokens with appropriate decimal places, and 4 with no implied price.  All tokens get minted to address[0] from the list above.
 * 3 ERC-721 NFTs: the first 20 tokens are minted to the deployer, each user gets a subsequent tokenId for all three.
 * 7 fungible pools:
