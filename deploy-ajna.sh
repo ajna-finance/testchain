@@ -16,6 +16,7 @@ echo Deploying AJNA to ${ETH_RPC_URL:?}
 
 # regular expressions to pluck addresses from deployment logs
 regex_ajna_token_address=".*AJNA[[:space:]]token[[:space:]]deployed[[:space:]]to[[:space:]]([0-9xa-fA-F]+)*."
+regex_burnwrapper_address=".*Created[[:space:]]BurnWrapper[[:space:]]at[[:space:]]([0-9xa-fA-F]+)*."
 regex_grantfund_address=".*GrantFund[[:space:]]deployed[[:space:]]to[[:space:]]([0-9xa-fA-F]+)*."
 regex_erc20_factory_address=".*ERC20[[:space:]]+factory[[:space:]]+([0-9xa-fA-F]+)*."
 regex_erc721_factory_address=".*ERC721[[:space:]]+factory[[:space:]]+([0-9xa-fA-F]+)*."
@@ -46,8 +47,22 @@ fi
 # since we minted 2bbn, burn half the tokens
 cast send ${AJNA_TOKEN} "burn(uint256)" 1000000000ether --from $DEPLOY_ADDRESS --private-key $DEPLOY_RAWKEY > /dev/null
 
-# deploy GrantFund
+# deploy BurnWrapper
 # modify source to set correct AJNA_TOKEN address
+sed -i -E "s#(AJNA_TOKEN_ADDRESS = )0x[0-9A-Fa-f]+#\1${AJNA_TOKEN}#" src/token/BurnWrapper.sol || fail
+deploy_cmd="forge script script/BurnWrapper.s.sol:DeployBurnWrapper \
+		    --rpc-url ${ETH_RPC_URL} --sender ${DEPLOY_ADDRESS} --private-key ${DEPLOY_RAWKEY} --broadcast -vvv"
+output=$(${deploy_cmd})
+if [[ $output =~ $regex_burnwrapper_address ]]
+then
+    export BURNWRAPPER=${BASH_REMATCH[1]}
+else
+    echo $output
+    echo Could not determine BurnWrapper address.
+    popd && fail
+fi
+
+# deploy GrantFund
 deploy_cmd="forge script script/GrantFund.s.sol:DeployGrantFund \
 	            --rpc-url ${ETH_RPC_URL} --sender ${DEPLOY_ADDRESS} --private-key ${DEPLOY_RAWKEY} --broadcast -vvv"
 output=$(${deploy_cmd})
@@ -63,6 +78,7 @@ fi
 # fund GrantFund with 300mm AJNA
 cast send ${AJNA_TOKEN} "approve(address,uint256)" ${GRANTFUND} 300000000ether --from $DEPLOY_ADDRESS --private-key $DEPLOY_RAWKEY > /dev/null
 cast send ${GRANTFUND} "fundTreasury(uint256)" 300000000ether --from $DEPLOY_ADDRESS --private-key $DEPLOY_RAWKEY > /dev/null
+popd
 
 # deploy everything in the contracts repository
 pushd ../contracts
@@ -105,6 +121,7 @@ else
     echo Could not determine RewardsManager address.
     popd && fail
 fi
+popd
 
 # deploy test token factory
 pushd ../tokens-factory
@@ -124,6 +141,7 @@ popd
 # print all the addresses
 echo === Local Testchain Addresses ===
 echo "AJNA token      ${AJNA_TOKEN}"
+echo "BurnWrapper     ${BURNWRAPPER}"
 echo "GrantFund       ${GRANTFUND}"
 echo "ERC20 factory   ${ERC20FACTORY}"
 echo "ERC721 factory  ${ERC721FACTORY}"

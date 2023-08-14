@@ -84,26 +84,28 @@ If you already deployed Ajna to the endpoint, it should return a slightly smalle
 
 ### Deploy Ajna to the testnet ###
 
+Source the deployment script, such that environment is updated with new deployment addresses.
 ```
-./deploy-ajna.sh
+source ./deploy-ajna.sh
 ```
 
 Record addresses printed by the deployment script here:
 ```
 === Local Testchain Addresses ===
 AJNA token      0x25Af17eF4E2E6A4A2CE586C9D25dF87FD84D4a7d
-GrantFund       0xE340B87CEd1af1AbE1CE8D617c84B7f168e3b18b
-ERC20 factory   0xD86c4A8b172170Da0d5C0C1F12455bA80Eaa42AD
-ERC721 factory  0x9617ABE221F9A9c492D5348be56aef4Db75A692d
-PoolInfoUtils   0x4f05DA51eAAB00e5812c54e370fB95D4C9c51F21
-PositionManager 0x6c5c7fD98415168ada1930d44447790959097482
-RewardsManager  0x6548dF23A854f72335902e58a1e59B50bb3f11F1
-TokensFactory   0x19156129c660883435Cad95100D025022443EDb2
+BurnWrapper     0xE340B87CEd1af1AbE1CE8D617c84B7f168e3b18b
+GrantFund       0x0b3A0ea1Fc7207d3e3ed9973025dA9d0e8fb0F3f
+ERC20 factory   0x9617ABE221F9A9c492D5348be56aef4Db75A692d
+ERC721 factory  0x4f05DA51eAAB00e5812c54e370fB95D4C9c51F21
+PoolInfoUtils   0x6c5c7fD98415168ada1930d44447790959097482
+PositionManager 0x6548dF23A854f72335902e58a1e59B50bb3f11F1
+RewardsManager  0xdF7403003a16c49ebA5883bB5890d474794cea5a
+TokensFactory   0x9a56e5e70373E4965AAAFB994CB58eDC577031D7
 ```
 
 ### Create test tokens and pools ###
 
-To facilitate testing, create some test tokens and pools.  Export `TOKENSFACTORY`, `ERC20FACTORY`, `ERC721FACTORY` and `GRANTFUND` to addresses from above, and then run `./deploy-canned-data.sh`.  This script will create several artifacts:
+To facilitate testing, create some test tokens and pools by running `./deploy-canned-data.sh`.  This script will create several artifacts:
 * 8 ERC-20 test tokens: 4 mimicing popular tokens with appropriate decimal places, and 4 with no implied price.  All tokens get minted to address[0] from the list above.
 * 3 ERC-721 NFTs: the first 20 tokens are minted to the deployer, each user gets a subsequent tokenId for all three.
 * 7 fungible pools:
@@ -132,28 +134,28 @@ To facilitate testing, create some test tokens and pools.  Export `TOKENSFACTORY
 
 Output should look like this:
 ```
-Deployed TWETH to 0xc17985054Cab9CEf76ec024820dAaaC50CE1ad85
-Deployed TDAI  to 0x53D10CAFE79953Bf334532e244ef0A80c3618199
-Deployed TWBTC to 0x91e7A64C3bE6977b1ea9b4ecBb1cC0e85073a9e6
-Deployed TUSDC to 0x72BB61e78fcB9dB3b5B3C8035BD9edAB5edd601E
-Deployed TESTA to 0x919ae2c42A69ebD939262F39b4dAdAFDBf9eB374
-Deployed TESTB to 0xfaEe9c3b7956Ee2088672FEd26200FAD7d85CB15
-Deployed TESTC to 0x674267c8A74fcAea8ccB1a196749B012e147005e
-Deployed TESTD to 0xf398f0bd39405C3029798C4CeFF4d5556592841F
-Deployed TDUCK to 0x1fb7972C722716F39DADF20967c6345dA223D943
-Deployed TGOOSE to 0xcc0ec11ED0B23bF63C00A5E138E1529598331d75
-Deployed TLOON to 0x11F89DFC6eBA8aDb5Dcef011B21EeD345bfC1B58
+Deployed TWETH to 0x844f3C269f301f89D81f29B91b8d8ED2C69Fa7Bc
+Deployed TDAI  to 0x4cEDCBb309d1646F3E91FB00c073bB28225262E6
+Deployed TWBTC to 0x983e8657Fb6450fca862a96BcAF461Ede2AaAE27
+Deployed TUSDC to 0x606A640CB77AeCBfefe918AebDCB34845FF18546
+Deployed TESTA to 0xf6C45B3B42b910110B1c750C959D0a396470c520
+Deployed TESTB to 0x3f2D7987bffe953f071273F3ABc99154ba3BAE99
+Deployed TESTC to 0x29eb88824f9F118B2aA975F6919D4a85189c9823
+Deployed TESTD to 0x1353F826e463782e084cf1f238662E40D32DD29d
+Deployed TDUCK to 0xaf36Ce3FD234ba81A9d4676CD09fC6700f087146
+Deployed TGOOSE to 0x5D94D2fa949Ac3127C27CB344882fAafE70665Df
+Deployed TLOON to 0xD933Ee26bB6bF3d6c4A769ECb0FC0D43fC5d52BD
 
-TESTA-TDAI pool deployed to 0x9b77d3C37FeDb8d1D8CF5174708Ed56163AD8FE4
-TESTB-TDAI pool deployed to 0x3578B4489FE9EE07FD1D62F767DdCDf2B99Ea511
-TESTC-TDAI pool deployed to 0xC28D5d48bA711F464044Bd983DA7A89d8285a686
-TESTD-TDAI pool deployed to 0x4c6041dbF60cBc7b947E8837EcD44525dA170aB0
-TWBTC-TDAI pool deployed to 0x5EdFB7B2b57abee98e6F1B445F0dd328893B8951
-TWETH-TUSDC pool deployed to 0x0598390613DE3208e320A8b272b6783832A918BD
-TWBTC-TUSDC pool deployed to 0x06A89f311d4559b9Ba7c0d32939dFADcDDC4Bb7A
-TDUCK-TDAI pool deployed to 0x845e5B204859f61b1EE99D60A9ff440d972Cde1C
-TGOOSE-TDAI pool deployed to 0x46f65d2c707ea9c15D398889cEF64C0C373bFdA7
-TLOON-TDAI pool deployed to 0x066E979d2533443E14Bb17807c5a94c532c2E9ec
+TESTA-TDAI pool deployed to 0x845e5B204859f61b1EE99D60A9ff440d972Cde1C
+TESTB-TDAI pool deployed to 0x46f65d2c707ea9c15D398889cEF64C0C373bFdA7
+TESTC-TDAI pool deployed to 0x066E979d2533443E14Bb17807c5a94c532c2E9ec
+TESTD-TDAI pool deployed to 0xe8dCc8FbAb00cF7911944dE5f9080Ecd9f25d3A9
+TWBTC-TDAI pool deployed to 0xa390765fB18EdCBC15dc9e2d56D9FC33c1a3FAcb
+TWETH-TUSDC pool deployed to 0x59e75F304a499cBa0FF2cd4eC7eee445B964F2B8
+TWBTC-TUSDC pool deployed to 0x5c6631E917f89882294F3edD18A067E47c9093cE
+TDUCK-TDAI pool deployed to 0xa1542c7f2e2EFB039893BAD7D663BE292e41a683
+TGOOSE-TDAI pool deployed to 0xEbca0ef5Da3A6AEc286dd8859817cF771A24D717
+TLOON-TDAI pool deployed to 0xadFadef7bfB285Bb1823A0A2b3708cac5EeA56A7
 
 Provisioning tokens               to 0xbC33716Bb8Dc2943C0dFFdE1F0A1d2D66F33515E
 Provisioning NFTs with tokenId 20 to 0xbC33716Bb8Dc2943C0dFFdE1F0A1d2D66F33515E
@@ -200,14 +202,12 @@ Approving POOLDUCK to spend borrower's NFT
 Borrower drawing debt from POOLDUCK
 Pool debt: 435.418269230769230970
 
-Latest block number: 231
-Latest block timestamp: 1689826191
-Latest block date: Thu Jul 20 00:09:51 2023
-Taking evm_snapshot of initial state
-"0x1"
+Latest block number: 247
+Latest block timestamp: 1691812001
+Latest block date: Fri Aug 11 23:46:41 2023
 ```
 
-Ensure pool size and pool debt is appropriate. After execution, update the text above with new token and pool addresses. Convert addresses to ERC-55 checksum addresses where appropriate.
+Ensure pool size and pool debt is appropriate. After execution, update the text above with new token and pool addresses.
 
 
 ### Persist changes ###

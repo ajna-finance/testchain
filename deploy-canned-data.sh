@@ -10,6 +10,7 @@ if [[ -z ${TOKENSFACTORY} ]]; then fail "please set TOKENSFACTORY address"; fi
 if [[ -z ${ERC20FACTORY} ]]; then fail "please set ERC20FACTORY address"; fi
 if [[ -z ${ERC721FACTORY} ]]; then fail "please set ERC721FACTORY address"; fi
 if [[ -z ${GRANTFUND} ]]; then fail "please set GRANTFUND address"; fi
+if [[ -z ${AJNA_TOKEN} ]]; then fail "please set AJNA_TOKEN address"; fi
 
 
 export ETH_RPC_URL=http://0.0.0.0:8555
@@ -97,6 +98,7 @@ for address in ${eoas[@]}; do
     cast send $TESTB "transfer(address,uint256)" $address 12000ether --from $DEPLOY_ADDRESS --private-key $DEPLOY_RAWKEY > /dev/null
     cast send $TESTC "transfer(address,uint256)" $address 13000ether --from $DEPLOY_ADDRESS --private-key $DEPLOY_RAWKEY > /dev/null
     cast send $TESTD "transfer(address,uint256)" $address 14000ether --from $DEPLOY_ADDRESS --private-key $DEPLOY_RAWKEY > /dev/null
+    cast send $AJNA_TOKEN "transfer(address,uint256)" $address 5000ether --from $DEPLOY_ADDRESS --private-key $DEPLOY_RAWKEY > /dev/null
     echo "Provisioning NFTs with tokenId $tokenId to $address"
     cast send $TDUCK "mint(address,uint256)" $address $tokenId --from $DEPLOY_ADDRESS --private-key $DEPLOY_RAWKEY > /dev/null
     cast send $TGOOSE "mint(address,uint256)" $address $tokenId --from $DEPLOY_ADDRESS --private-key $DEPLOY_RAWKEY > /dev/null
