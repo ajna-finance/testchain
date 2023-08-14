@@ -16,7 +16,7 @@ echo Deploying AJNA to ${ETH_RPC_URL:?}
 
 # regular expressions to pluck addresses from deployment logs
 regex_ajna_token_address=".*AJNA[[:space:]]token[[:space:]]deployed[[:space:]]to[[:space:]]([0-9xa-fA-F]+)*."
-regex_burnwrapper_address=".*Created BurnWrapper at ([0-9xa-fA-F]+)*."
+regex_burnwrapper_address=".*Created[[:space:]]BurnWrapper[[:space:]]at[[:space:]]([0-9xa-fA-F]+)*."
 regex_grantfund_address=".*GrantFund[[:space:]]deployed[[:space:]]to[[:space:]]([0-9xa-fA-F]+)*."
 regex_erc20_factory_address=".*ERC20[[:space:]]+factory[[:space:]]+([0-9xa-fA-F]+)*."
 regex_erc721_factory_address=".*ERC721[[:space:]]+factory[[:space:]]+([0-9xa-fA-F]+)*."
@@ -49,7 +49,7 @@ cast send ${AJNA_TOKEN} "burn(uint256)" 1000000000ether --from $DEPLOY_ADDRESS -
 
 # deploy BurnWrapper
 # modify source to set correct AJNA_TOKEN address
-sed -i -E "s/(AJNA_TOKEN_ADDRESS = )0x[0-9A-Fa-f]+/\1${AJNA_TOKEN}/" src/token/BurnWrapper.sol || fail
+sed -i -E "s#(AJNA_TOKEN_ADDRESS = )0x[0-9A-Fa-f]+#\1${AJNA_TOKEN}#" src/token/BurnWrapper.sol || fail
 deploy_cmd="forge script script/BurnWrapper.s.sol:DeployBurnWrapper \
 		    --rpc-url ${ETH_RPC_URL} --sender ${DEPLOY_ADDRESS} --private-key ${DEPLOY_RAWKEY} --broadcast -vvv"
 output=$(${deploy_cmd})
