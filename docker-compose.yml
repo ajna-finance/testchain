@@ -5,7 +5,7 @@ services:
     image: trufflesuite/ganache:latest
     ports:
       - 8555:8555
-    command: --db=/app/data --accounts 16 --chain.chainId ${CHAIN_ID:-5124} --wallet.seed 20070213 --port 8555 -v
+    command: --db=/app/data --accounts 16 --chain.chainId ${CHAIN_ID:-5124} --miner.blockTime 12 --wallet.seed 20070213 --port 8555 -v
     container_name: ajna-testnet
     networks:
       - ajna_test_network
