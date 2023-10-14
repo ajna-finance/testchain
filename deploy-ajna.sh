@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 
 # terminate with message upon error
 function fail {

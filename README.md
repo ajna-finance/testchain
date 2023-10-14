@@ -84,23 +84,23 @@ If you already deployed Ajna to the endpoint, it should return a slightly smalle
 
 ### Deploy Ajna to the testnet ###
 
-Source the deployment script, such that environment is updated with new deployment addresses.
+Source the deployment script, such that environment is updated with new deployment addresses, and terminal does not close if failure occurs.
 ```
-source ./deploy-ajna.sh
+source ./deploy-ajna.sh || true
 ```
 
 Record addresses printed by the deployment script here:
 ```
 === Local Testchain Addresses ===
-AJNA token      0x25Af17eF4E2E6A4A2CE586C9D25dF87FD84D4a7d
-BurnWrapper     0xE340B87CEd1af1AbE1CE8D617c84B7f168e3b18b
-GrantFund       0x0b3A0ea1Fc7207d3e3ed9973025dA9d0e8fb0F3f
-ERC20 factory   0x9617ABE221F9A9c492D5348be56aef4Db75A692d
-ERC721 factory  0x4f05DA51eAAB00e5812c54e370fB95D4C9c51F21
-PoolInfoUtils   0x6c5c7fD98415168ada1930d44447790959097482
-PositionManager 0x6548dF23A854f72335902e58a1e59B50bb3f11F1
-RewardsManager  0xdF7403003a16c49ebA5883bB5890d474794cea5a
-TokensFactory   0x9a56e5e70373E4965AAAFB994CB58eDC577031D7
+AJNA token      0x3d96b9997E302a91bC946D31Ea80A228b1548543
+BurnWrapper     0x4306638A0F6BD9C4A1EF9EbCFF8579688C9C16Ea
+GrantFund       0xBE5902a0c6CCf915e69332c3386A789739829506
+ERC20 factory   0x603066511bCe10Fe9c494bF20AEE64e0B9DF7943
+ERC721 factory  0x8815C3349E5aE77F851E986b02eBC68613428030
+PoolInfoUtils   0xBd4EBd9aA954FadCE1EA3C2Bf16C9AEf334fac44
+PositionManager 0x60205851A054184Fe0c51543d401bAfd2239AA1E
+RewardsManager  0x2974B229FeB0E39D72ff79Cb4000AD7C7F3fff0A
+TokensFactory   0x540E319b20fC900EAa6466f05B727f6b802f9928
 ```
 
 ### Create test tokens and pools ###
@@ -134,28 +134,28 @@ To facilitate testing, create some test tokens and pools by running `./deploy-ca
 
 Output should look like this:
 ```
-Deployed TWETH to 0x844f3C269f301f89D81f29B91b8d8ED2C69Fa7Bc
-Deployed TDAI  to 0x4cEDCBb309d1646F3E91FB00c073bB28225262E6
-Deployed TWBTC to 0x983e8657Fb6450fca862a96BcAF461Ede2AaAE27
-Deployed TUSDC to 0x606A640CB77AeCBfefe918AebDCB34845FF18546
-Deployed TESTA to 0xf6C45B3B42b910110B1c750C959D0a396470c520
-Deployed TESTB to 0x3f2D7987bffe953f071273F3ABc99154ba3BAE99
-Deployed TESTC to 0x29eb88824f9F118B2aA975F6919D4a85189c9823
-Deployed TESTD to 0x1353F826e463782e084cf1f238662E40D32DD29d
-Deployed TDUCK to 0xaf36Ce3FD234ba81A9d4676CD09fC6700f087146
-Deployed TGOOSE to 0x5D94D2fa949Ac3127C27CB344882fAafE70665Df
-Deployed TLOON to 0xD933Ee26bB6bF3d6c4A769ECb0FC0D43fC5d52BD
+Deployed TWETH to 0x0a02A6c7a0Be71683D99703F96425dEEe32a1C3B
+Deployed TDAI  to 0xC5F2CDB4c697Af6A304f3Aa3c35fa34cC2D904E6
+Deployed TWBTC to 0x33a50aDC49717fA7E8955e1B4b5a34e989e95e98
+Deployed TUSDC to 0x71496e3C1e62f3a40B2B0E7A8d17aA739b38e5df
+Deployed TESTA to 0xd7D67a7038D738cBa93f45f730CB2D18CEB9EcD6
+Deployed TESTB to 0xE80B078c32452eA5CFa70EFbC28088c82Fb89b8e
+Deployed TESTC to 0x0a22D32d2147F9F7B7F63BBE9C374ec1f84e535E
+Deployed TESTD to 0x25082b771335b844301330868Cbd06a97eC3DFf7
+Deployed TDUCK to 0xAA74d8C5326683D137ba936E25df4f5ddCD38681
+Deployed TGOOSE to 0xeE89D34012f6b77aA0eF98A43246B1731d31CC39
+Deployed TLOON to 0x6eA897CF13371b49CB055fAeDcad6c13eDAe5a8b
 
-TESTA-TDAI pool deployed to 0x845e5B204859f61b1EE99D60A9ff440d972Cde1C
-TESTB-TDAI pool deployed to 0x46f65d2c707ea9c15D398889cEF64C0C373bFdA7
-TESTC-TDAI pool deployed to 0x066E979d2533443E14Bb17807c5a94c532c2E9ec
-TESTD-TDAI pool deployed to 0xe8dCc8FbAb00cF7911944dE5f9080Ecd9f25d3A9
-TWBTC-TDAI pool deployed to 0xa390765fB18EdCBC15dc9e2d56D9FC33c1a3FAcb
-TWETH-TUSDC pool deployed to 0x59e75F304a499cBa0FF2cd4eC7eee445B964F2B8
-TWBTC-TUSDC pool deployed to 0x5c6631E917f89882294F3edD18A067E47c9093cE
-TDUCK-TDAI pool deployed to 0xa1542c7f2e2EFB039893BAD7D663BE292e41a683
-TGOOSE-TDAI pool deployed to 0xEbca0ef5Da3A6AEc286dd8859817cF771A24D717
-TLOON-TDAI pool deployed to 0xadFadef7bfB285Bb1823A0A2b3708cac5EeA56A7
+TESTA-TDAI pool deployed to 0xA21ABeFb19c0953A405670aA1318e155433204Ca
+TESTB-TDAI pool deployed to 0x08783e7A089C0632f4D6E028aB87281122201C94
+TESTC-TDAI pool deployed to 0xCf6634f2d7b1C73F7028677692032e4251321a86
+TESTD-TDAI pool deployed to 0xc9042Ff3efb87A7176D324AB4E5D0B30438BdE23
+TWBTC-TDAI pool deployed to 0xbc834960EfeDA024363099D1C490b8A54B30159E
+TWETH-TUSDC pool deployed to 0xECc5E8302a4A696a7ED2fBABCd713E07dA349dD7
+TWBTC-TUSDC pool deployed to 0x43e90d600fCD23e6168f62D31b5A5D2ADfcD64D8
+TDUCK-TDAI pool deployed to 0x55B16847869151C27D87e45327C73d8CDB7698C3
+TGOOSE-TDAI pool deployed to 0x0753751A207f1a9416165af6e22621C9CaD00bC6
+TLOON-TDAI pool deployed to 0x041bd061cCB522e1a85E7E1f319584013D3E1d97
 
 Provisioning tokens               to 0xbC33716Bb8Dc2943C0dFFdE1F0A1d2D66F33515E
 Provisioning NFTs with tokenId 20 to 0xbC33716Bb8Dc2943C0dFFdE1F0A1d2D66F33515E
@@ -193,22 +193,21 @@ Lender adding liquidity to POOLA
 Pool size: 25000
 Approving POOLA to spend borrower's tokens
 Borrower drawing debt from POOLA
-Pool debt: 10009.615384615384620000
+Pool debt: 10009.615955940479948452
 
 Approving POOLDUCK to spend lender's TDAI
 Lender adding liquidity to POOLDUCK
 Pool size: 10000
 Approving POOLDUCK to spend borrower's NFT
 Borrower drawing debt from POOLDUCK
-Pool debt: 435.418269230769230970
+Pool debt: 435.418285799196837439
 
-Latest block number: 247
-Latest block timestamp: 1691812001
-Latest block date: Fri Aug 11 23:46:41 2023
+Latest block number: 14363
+Latest block timestamp: 1697230210
+Latest block date: Fri Oct 13 16:50:10 2023
 ```
 
 Ensure pool size and pool debt is appropriate. After execution, update the text above with new token and pool addresses.
-
 
 ### Persist changes ###
 
@@ -245,22 +244,22 @@ docker exec -it <image_name> /bin/sh
 
 ## Utility Scripts
 
-*GANACHE_URL is taken either from your computer's environment variable ETH_RPC_URL or from command input*
+*GANACHE_URL is taken either from your computer's environment variable ETH_RPC_URL or from command input.*  If you are running against a local deployment of the testchain using the docker image, you'll likely want to `export GANACHE_URL=http://0.0.0.0:8555`.
   
 To jump in time with `evm_increaseTime`
 
 ```
-./jump.sh NUMBER_OF_SECONDS GANACHE_URL
+./jump.sh <NUMBER_OF_SECONDS> $GANACHE_URL
 ```
 
 To reset to the initial snapshot. Be aware that Subgraph doesn't work well with Ganache and after reverting to snapshot, all Subgraph's data will remain.
 
 ```
-./reset.sh GANACHE_URL
+./reset.sh $GANACHE_URL
 ```
 
 To check the latest block number and block time
 
 ```
-./getBlockTime.sh GANACHE_URL
+./getBlockTime.sh $GANACHE_URL
 ```
