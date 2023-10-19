@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 
 # terminate with message upon error
 function fail {
@@ -21,8 +22,8 @@ regex_grantfund_address=".*GrantFund[[:space:]]deployed[[:space:]]to[[:space:]](
 regex_erc20_factory_address=".*ERC20[[:space:]]+factory[[:space:]]+([0-9xa-fA-F]+)*."
 regex_erc721_factory_address=".*ERC721[[:space:]]+factory[[:space:]]+([0-9xa-fA-F]+)*."
 regex_poolinfoutils_address=".*PoolInfoUtils[[:space:]]+([0-9xa-fA-F]+)*."
+regex_multicallutils_address=".*PoolInfoUtilsMulticall[[:space:]]+([0-9xa-fA-F]+)*."
 regex_positionmanager_address=".*PositionManager[[:space:]]+([0-9xa-fA-F]+)*."
-regex_rewardsmanager_address=".*RewardsManager[[:space:]]+([0-9xa-fA-F]+)*."
 regex_tokensfactory_address=".*TokensFactory[[:space:]]+deployed[[:space:]]+to[[:space:]]+([0-9xa-fA-F]+)*."
 
 # Test to ensure user cloned repositories into expected locations.
@@ -107,18 +108,18 @@ else
     echo Could not determine PoolInfoUtils address.
     popd && fail
 fi
+if [[ $output =~ $regex_multicallutils_address ]]
+then
+    export MULTICALLUTILS=${BASH_REMATCH[1]}
+else
+    echo Could not determine PoolInfoUtilsMulticall address.
+    popd && fail
+fi
 if [[ $output =~ $regex_positionmanager_address ]]
 then
     export POSITIONMANAGER=${BASH_REMATCH[1]}
 else
     echo Could not determine PositionManager address.
-    popd && fail
-fi
-if [[ $output =~ $regex_rewardsmanager_address ]]
-then
-    export REWARDSMANAGER=${BASH_REMATCH[1]}
-else
-    echo Could not determine RewardsManager address.
     popd && fail
 fi
 popd
@@ -140,12 +141,12 @@ popd
 
 # print all the addresses
 echo === Local Testchain Addresses ===
-echo "AJNA token      ${AJNA_TOKEN}"
-echo "BurnWrapper     ${BURNWRAPPER}"
-echo "GrantFund       ${GRANTFUND}"
-echo "ERC20 factory   ${ERC20FACTORY}"
-echo "ERC721 factory  ${ERC721FACTORY}"
-echo "PoolInfoUtils   ${POOLINFOUTILS}"
-echo "PositionManager ${POSITIONMANAGER}"
-echo "RewardsManager  ${REWARDSMANAGER}"
-echo "TokensFactory   ${TOKENSFACTORY}"
+echo "AJNA token             ${AJNA_TOKEN}"
+echo "BurnWrapper            ${BURNWRAPPER}"
+echo "GrantFund              ${GRANTFUND}"
+echo "ERC20 factory          ${ERC20FACTORY}"
+echo "ERC721 factory         ${ERC721FACTORY}"
+echo "PoolInfoUtils          ${POOLINFOUTILS}"
+echo "PoolInfoUtilsMulticall ${MULTICALLUTILS}"
+echo "PositionManager        ${POSITIONMANAGER}"
+echo "TokensFactory          ${TOKENSFACTORY}"
