@@ -151,7 +151,7 @@ echo Pool debt: $( cast --to-unit $(cast call $POOLDUCK "debtInfo()(uint256,uint
 echo
 
 # start a new distribution period
-# FIXME: this reverts with "result": String("0xd7483288")
+# If this reverts with "result": String("0xd7483288"), it means a distribution period was already started by a previous deployment.
 cast send ${GRANTFUND:?} "startNewDistributionPeriod()" --from $DEPLOY_ADDRESS --private-key $DEPLOY_RAWKEY > /dev/null
 
 # Take an EVM snapshot

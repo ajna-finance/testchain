@@ -85,23 +85,24 @@ If you already deployed Ajna to the endpoint, it should return a slightly smalle
 ### Deploy Ajna to the testnet ###
 
 Source the deployment script, such that environment is updated with new deployment addresses.
-If a failure closes your terminal, open a nested `bash` session to debug.
+The nested `bash` session helps prevent an error from closing your terminal.
 ```
+bash
 source ./deploy-ajna.sh
 ```
 
 Record addresses printed by the deployment script here:
 ```
 === Local Testchain Addresses ===
-AJNA token             0x3c55A1F2Dde70ce9481621c67Eb4F6d1d1CB8dBc
-BurnWrapper            0x19FCc2FFFc1AB0f56f3e706a76021560F557241d
-GrantFund              0x6F985d253b1Be2a2c9267A447F74fE44F413F2a6
-ERC20 factory          0x6C3ff638Ad7D4CA25600b5236CeFcb41B3895F8e
-ERC721 factory         0x6fE7DEB17CC00A3d65f3CDf852Bb17DddEddf8E7
-PoolInfoUtils          0xab56A77bDFe82b36875e92CE717fE533C1709A9D
-PoolInfoUtilsMulticall 0x1d00b2f5861457F8503a481774903E36872Ea17d
-PositionManager        0x502dD41556B128C23F8B715dBEEBB73D1F1Feb67
-TokensFactory          0xBE5902a0c6CCf915e69332c3386A789739829506
+AJNA token             0x25Af17eF4E2E6A4A2CE586C9D25dF87FD84D4a7d
+BurnWrapper            0xE340B87CEd1af1AbE1CE8D617c84B7f168e3b18b
+GrantFund              0x0b3A0ea1Fc7207d3e3ed9973025dA9d0e8fb0F3f
+ERC20 factory          0x9617ABE221F9A9c492D5348be56aef4Db75A692d
+ERC721 factory         0x4f05DA51eAAB00e5812c54e370fB95D4C9c51F21
+PoolInfoUtils          0x6c5c7fD98415168ada1930d44447790959097482
+PoolInfoUtilsMulticall 0x6548dF23A854f72335902e58a1e59B50bb3f11F1
+PositionManager        0xdF7403003a16c49ebA5883bB5890d474794cea5a
+TokensFactory          0x9a56e5e70373E4965AAAFB994CB58eDC577031D7
 ```
 
 ### Create test tokens and pools ###
@@ -130,33 +131,34 @@ To facilitate testing, create some test tokens and pools by running `./deploy-ca
     | 2909  | 502.434 | 6000    | 0          |
     | 2920  | 475.611 | 4000    | 0          |
 
+    Same borrower draws 435 debt, setting LUP to 2909.
   * `TGOOSE-TDAI` - Empty subset pool accepting odd-numbered tokenIds 15-33.
   * `TLOON-TDAI` - Empty subset pool accepting even-numbered tokenIds 16-34.
 
 Output should look like this:
 ```
-Deployed TWETH to 0x770E225E95Bf56553970FBd44b10B2B0A1285145
-Deployed TDAI  to 0x28B1d8a6b621ae7e28F4Ec148Dd6140387f86dBa
-Deployed TWBTC to 0x77A8ec7114ad65832545Ec4dcb8797F175B0DEAb
-Deployed TUSDC to 0xC25177C3FEa4C578a13Aa6eBB57B4c6b2F0c575a
-Deployed TESTA to 0xdb475551A4E81Dd837ff29a1fEc6b20E62270749
-Deployed TESTB to 0x93710870af60C4962C20E3A93a817DEa1C072288
-Deployed TESTC to 0x6a9105DdB26E681E5270447f4e15c0958caB297B
-Deployed TESTD to 0xEcb2b7CC692c873A482C856F508f74D35CE24924
-Deployed TDUCK to 0x5814A7382Aa7a3c56D4A2E02FD66557c65cD90c0
-Deployed TGOOSE to 0xB4520Df94096eb9169d14Caa6A35a5C5A672bF8c
-Deployed TLOON to 0xCBb901398AA85dc4d9891190a524b9117dec4b01
+Deployed TWETH to 0x844f3C269f301f89D81f29B91b8d8ED2C69Fa7Bc
+Deployed TDAI  to 0x4cEDCBb309d1646F3E91FB00c073bB28225262E6
+Deployed TWBTC to 0x983e8657Fb6450fca862a96BcAF461Ede2AaAE27
+Deployed TUSDC to 0x606A640CB77AeCBfefe918AebDCB34845FF18546
+Deployed TESTA to 0xf6C45B3B42b910110B1c750C959D0a396470c520
+Deployed TESTB to 0x3f2D7987bffe953f071273F3ABc99154ba3BAE99
+Deployed TESTC to 0x29eb88824f9F118B2aA975F6919D4a85189c9823
+Deployed TESTD to 0x1353F826e463782e084cf1f238662E40D32DD29d
+Deployed TDUCK to 0xaf36Ce3FD234ba81A9d4676CD09fC6700f087146
+Deployed TGOOSE to 0x5D94D2fa949Ac3127C27CB344882fAafE70665Df
+Deployed TLOON to 0xD933Ee26bB6bF3d6c4A769ECb0FC0D43fC5d52BD
 
-TESTA-TDAI pool deployed to 0x68Ee4e842A7DdFa4F4458F9b0aCdAF6C283af717
-TESTB-TDAI pool deployed to 0xFbaeC3F232c5CEba17C1a5911020528D6D50CDd8
-TESTC-TDAI pool deployed to 0x52D1Dd2A1bA2025fC2cBaE9F4fFfB2c6b85ebb62
-TESTD-TDAI pool deployed to 0xC16a579e1490e1644038688801D365CA53Ec4f34
-TWBTC-TDAI pool deployed to 0xD94B464C5AfD954622503f21b39573dfF1D41129
-TWETH-TUSDC pool deployed to 0x29f3304350181e627d59af075F55bf0E63907589
-TWBTC-TUSDC pool deployed to 0x6807CAbC84495850191cC3A97674a4a6a2ccB65b
-TDUCK-TDAI pool deployed to 0xEd13b3Eb7E404dCB6529386F4D032C715ac8E0e2
-TGOOSE-TDAI pool deployed to 0x5509D6168041d7589AE5178FD2acD89d428D3bcC
-TLOON-TDAI pool deployed to 0x36e059f153486D8A03F2140A67d871FC0Bf76DFD
+TESTA-TDAI pool deployed to 0x845e5B204859f61b1EE99D60A9ff440d972Cde1C
+TESTB-TDAI pool deployed to 0x46f65d2c707ea9c15D398889cEF64C0C373bFdA7
+TESTC-TDAI pool deployed to 0x066E979d2533443E14Bb17807c5a94c532c2E9ec
+TESTD-TDAI pool deployed to 0xe8dCc8FbAb00cF7911944dE5f9080Ecd9f25d3A9
+TWBTC-TDAI pool deployed to 0xa390765fB18EdCBC15dc9e2d56D9FC33c1a3FAcb
+TWETH-TUSDC pool deployed to 0x59e75F304a499cBa0FF2cd4eC7eee445B964F2B8
+TWBTC-TUSDC pool deployed to 0x5c6631E917f89882294F3edD18A067E47c9093cE
+TDUCK-TDAI pool deployed to 0xa1542c7f2e2EFB039893BAD7D663BE292e41a683
+TGOOSE-TDAI pool deployed to 0xEbca0ef5Da3A6AEc286dd8859817cF771A24D717
+TLOON-TDAI pool deployed to 0xadFadef7bfB285Bb1823A0A2b3708cac5EeA56A7
 
 Provisioning tokens               to 0xbC33716Bb8Dc2943C0dFFdE1F0A1d2D66F33515E
 Provisioning NFTs with tokenId 20 to 0xbC33716Bb8Dc2943C0dFFdE1F0A1d2D66F33515E
@@ -191,21 +193,21 @@ Provisioning NFTs with tokenId 34 to 0x8596d963e0DEBCa873A56FbDd2C9d119Aa0eB443
 
 Approving POOLA to spend lender's tokens
 Lender adding liquidity to POOLA
-Pool size: 25000
+Pool size: 24998.858447488584475000
 Approving POOLA to spend borrower's tokens
 Borrower drawing debt from POOLA
 Pool debt: 10009.615384615384620000
 
 Approving POOLDUCK to spend lender's TDAI
 Lender adding liquidity to POOLDUCK
-Pool size: 10000
+Pool size: 9999.543378995433790000
 Approving POOLDUCK to spend borrower's NFT
 Borrower drawing debt from POOLDUCK
 Pool debt: 435.418269230769230970
 
-Latest block number: 327
-Latest block timestamp: 1697573397
-Latest block date: Tue Oct 17 16:09:57 2023
+Latest block number: 247
+Latest block timestamp: 1703174768
+Latest block date: Thu Dec 21 11:06:08 2023
 ```
 
 Ensure pool size and pool debt is appropriate. After execution, update the text above with new token and pool addresses.
