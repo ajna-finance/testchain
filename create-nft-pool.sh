@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 
 # set up environment for the ganache container
 export ETH_RPC_URL=http://0.0.0.0:8555
@@ -16,10 +17,10 @@ function log {
 }
 function fail {
     log "$1"
-    exit 1
+    return 121
 }
 
-regex_pool_bytes='"data":"0x0{24}([0-9a-fA-F]+)'
+regex_pool_bytes='"data":"0x0{24}([0-9a-fA-F]{40})'
 
 pushd ../contracts > /dev/null
 if [[ -z ${ERC721FACTORY} ]]; then fail "please set ERC721FACTORY address"; fi
