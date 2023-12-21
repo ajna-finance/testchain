@@ -19,8 +19,8 @@ echo Deploying AJNA to ${ETH_RPC_URL:?}
 regex_ajna_token_address=".*AJNA[[:space:]]token[[:space:]]deployed[[:space:]]to[[:space:]]([0-9xa-fA-F]+)*."
 regex_burnwrapper_address=".*Created[[:space:]]BurnWrapper[[:space:]]at[[:space:]]([0-9xa-fA-F]+)*."
 regex_grantfund_address=".*GrantFund[[:space:]]deployed[[:space:]]to[[:space:]]([0-9xa-fA-F]+)*."
-regex_erc20_factory_address=".*ERC20[[:space:]]+factory[[:space:]]+([0-9xa-fA-F]+)*."
-regex_erc721_factory_address=".*ERC721[[:space:]]+factory[[:space:]]+([0-9xa-fA-F]+)*."
+regex_erc20_factory_address=".*ERC20PoolFactory[[:space:]]+([0-9xa-fA-F]+)*."
+regex_erc721_factory_address=".*ERC721PoolFactory[[:space:]]+([0-9xa-fA-F]+)*."
 regex_poolinfoutils_address=".*PoolInfoUtils[[:space:]]+([0-9xa-fA-F]+)*."
 regex_multicallutils_address=".*PoolInfoUtilsMulticall[[:space:]]+([0-9xa-fA-F]+)*."
 regex_positionmanager_address=".*PositionManager[[:space:]]+([0-9xa-fA-F]+)*."
@@ -58,7 +58,7 @@ if [[ $output =~ $regex_burnwrapper_address ]]
 then
     export BURNWRAPPER=${BASH_REMATCH[1]}
 else
-    echo $output
+    echo "$output"
     echo Could not determine BurnWrapper address.
     popd && fail
 fi
@@ -71,7 +71,7 @@ if [[ $output =~ $regex_grantfund_address ]]
 then
     export GRANTFUND=${BASH_REMATCH[1]}
 else
-    echo $output
+    echo "$output"
     echo Could not determine GrantFund address.
     popd && fail
 fi
@@ -90,7 +90,7 @@ if [[ $output =~ $regex_erc20_factory_address ]]
 then
     export ERC20FACTORY=${BASH_REMATCH[1]}
 else
-    echo $output
+    echo "$output"
     echo Could not determine ERC20 factory address.
     popd && fail
 fi
@@ -98,6 +98,7 @@ if [[ $output =~ $regex_erc721_factory_address ]]
 then
     export ERC721FACTORY=${BASH_REMATCH[1]}
 else
+    echo "$output"
     echo Could not determine ERC721 factory address.
     popd && fail
 fi
@@ -105,6 +106,7 @@ if [[ $output =~ $regex_poolinfoutils_address ]]
 then
     export POOLINFOUTILS=${BASH_REMATCH[1]}
 else
+    echo "$output"
     echo Could not determine PoolInfoUtils address.
     popd && fail
 fi
@@ -112,6 +114,7 @@ if [[ $output =~ $regex_multicallutils_address ]]
 then
     export MULTICALLUTILS=${BASH_REMATCH[1]}
 else
+    echo "$output"
     echo Could not determine PoolInfoUtilsMulticall address.
     popd && fail
 fi
@@ -119,6 +122,7 @@ if [[ $output =~ $regex_positionmanager_address ]]
 then
     export POSITIONMANAGER=${BASH_REMATCH[1]}
 else
+    echo "$output"
     echo Could not determine PositionManager address.
     popd && fail
 fi
@@ -126,14 +130,14 @@ popd
 
 # deploy test token factory
 pushd ../tokens-factory
-deploy_cmd="forge script script/DeployTokensFactory.s.sol:DeployTokensFactory --fork-block-number 1 \
+deploy_cmd="forge script script/DeployTokensFactory.s.sol:DeployTokensFactory \
             --rpc-url ${ETH_RPC_URL} --sender ${DEPLOY_ADDRESS} --private-key ${DEPLOY_RAWKEY} --broadcast -vvv"
 output=$(${deploy_cmd})
 if [[ $output =~ $regex_tokensfactory_address ]]
 then
     export TOKENSFACTORY=${BASH_REMATCH[1]}
 else
-    echo $output
+    echo "$output"
     echo Could not determine TokensFactory address.
     popd && fail
 fi

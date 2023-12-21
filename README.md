@@ -84,9 +84,10 @@ If you already deployed Ajna to the endpoint, it should return a slightly smalle
 
 ### Deploy Ajna to the testnet ###
 
-Source the deployment script, such that environment is updated with new deployment addresses, and terminal does not close if failure occurs.
+Source the deployment script, such that environment is updated with new deployment addresses.
+If a failure closes your terminal, open a nested `bash` session to debug.
 ```
-source ./deploy-ajna.sh || true
+source ./deploy-ajna.sh
 ```
 
 Record addresses printed by the deployment script here:
