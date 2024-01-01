@@ -117,10 +117,11 @@ TIMESTAMP=$(date -u +%s)
 EXPIRY=$(( $TIMESTAMP + 86400 ))
 cast send $POOLA "addCollateral(uint256,uint256,uint256)" 3.1ether 3220 $EXPIRY --from $LENDER_ADDRESS --private-key $LENDER_KEY > /dev/null
 # NOTE: explicit gas limit must be set for reliable addQuoteToken execution
-cast send $POOLA "addQuoteToken(uint256,uint256,uint256,bool)" 8000ether 3236 $EXPIRY false --from $LENDER_ADDRESS --private-key $LENDER_KEY --gas-limit 1000000 > /dev/null
-cast send $POOLA "addQuoteToken(uint256,uint256,uint256,bool)" 12000ether 3242 $EXPIRY false --from $LENDER_ADDRESS --private-key $LENDER_KEY --gas-limit 1000000 > /dev/null
-cast send $POOLA "addQuoteToken(uint256,uint256,uint256,bool)" 5000ether 3261 $EXPIRY false --from $LENDER_ADDRESS --private-key $LENDER_KEY --gas-limit 1000000 > /dev/null
-echo Pool size: $( cast --to-unit $( cast call $POOLA "depositSize()(uint256)" ) ether )
+cast send $POOLA "addQuoteToken(uint256,uint256,uint256)" 8000ether 3236 $EXPIRY --from $LENDER_ADDRESS --private-key $LENDER_KEY --gas-limit 1000000 > /dev/null
+cast send $POOLA "addQuoteToken(uint256,uint256,uint256)" 12000ether 3242 $EXPIRY --from $LENDER_ADDRESS --private-key $LENDER_KEY --gas-limit 1000000 > /dev/null
+cast send $POOLA "addQuoteToken(uint256,uint256,uint256)" 5000ether 3261 $EXPIRY --from $LENDER_ADDRESS --private-key $LENDER_KEY --gas-limit 1000000 > /dev/null
+# NOTE: "cut" is used to strip unwanted prettified scientific notation from forge output (a recent breaking change)
+echo Pool size: $( cast --to-unit $( cast call $POOLA "depositSize()(uint256)" | cut -f1 -d" " ) ether )
 
 # Draw debt from fungible pool
 echo Approving POOLA to spend borrower\'s tokens
@@ -130,26 +131,27 @@ echo Borrower drawing debt from POOLA
 DEBT=10000; PRICE=100; CR=1.3
 COLLATERAL=$(echo "$DEBT / $PRICE * $CR / 1" | bc)
 cast send $POOLA "drawDebt(address,uint256,uint256,uint256)" $BORROWER_ADDRESS ${DEBT}ether 3260 ${COLLATERAL}ether --from $BORROWER_ADDRESS --private-key $BORROWER_KEY --gas-limit 1000000 > /dev/null
-echo Pool debt: $( cast --to-unit $(cast call $POOLA "debtInfo()(uint256,uint256,uint256)" | head -1) ether )
+echo Pool debt: $( cast --to-unit $(cast call $POOLA "debtInfo()(uint256,uint256,uint256)" | head -1 | cut -f1 -d" " ) ether )
 echo
 
 # Add liquidity to nonfungible pool
 echo Approving POOLDUCK to spend lender\'s TDAI
 cast send $TDAI "approve(address,uint256)" $POOLDUCK 100000ether --from $LENDER_ADDRESS --private-key $LENDER_KEY > /dev/null
 echo Lender adding liquidity to POOLDUCK
-cast send $POOLDUCK "addQuoteToken(uint256,uint256,uint256,bool)" 6000ether 2909 $EXPIRY false --from $LENDER_ADDRESS --private-key $LENDER_KEY --gas-limit 1000000 > /dev/null
-cast send $POOLDUCK "addQuoteToken(uint256,uint256,uint256,bool)" 4000ether 2920 $EXPIRY false --from $LENDER_ADDRESS --private-key $LENDER_KEY --gas-limit 1000000 > /dev/null
-echo Pool size: $( cast --to-unit $( cast call $POOLDUCK "depositSize()(uint256)" ) ether )
+cast send $POOLDUCK "addQuoteToken(uint256,uint256,uint256)" 6000ether 2909 $EXPIRY --from $LENDER_ADDRESS --private-key $LENDER_KEY --gas-limit 1000000 > /dev/null
+cast send $POOLDUCK "addQuoteToken(uint256,uint256,uint256)" 4000ether 2920 $EXPIRY --from $LENDER_ADDRESS --private-key $LENDER_KEY --gas-limit 1000000 > /dev/null
+echo Pool size: $( cast --to-unit $( cast call $POOLDUCK "depositSize()(uint256)" | cut -f1 -d" " ) ether )
 
 # Draw debt from nonfungible pool
 echo Approving POOLDUCK to spend borrower\'s NFT
 cast send $TDUCK "setApprovalForAll(address,bool)" $POOLDUCK true --from $BORROWER_ADDRESS --private-key $BORROWER_KEY > /dev/null
 echo Borrower drawing debt from POOLDUCK
 cast send $POOLDUCK "drawDebt(address,uint256,uint256,uint256[])" $BORROWER_ADDRESS 435ether 7388 [21] --from $BORROWER_ADDRESS --private-key $BORROWER_KEY --gas-limit 1000000 > /dev/null
-echo Pool debt: $( cast --to-unit $(cast call $POOLDUCK "debtInfo()(uint256,uint256,uint256)" | head -1) ether )
+echo Pool debt: $( cast --to-unit $(cast call $POOLDUCK "debtInfo()(uint256,uint256,uint256)" | head -1 | cut -f1 -d" " ) ether )
 echo
 
 # start a new distribution period
+# If this reverts with "result": String("0xd7483288"), it means a distribution period was already started by a previous deployment.
 cast send ${GRANTFUND:?} "startNewDistributionPeriod()" --from $DEPLOY_ADDRESS --private-key $DEPLOY_RAWKEY > /dev/null
 
 # Take an EVM snapshot
